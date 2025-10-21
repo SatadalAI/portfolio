@@ -1,0 +1,32 @@
+name: Generate images.json
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Run image generator
+        run: node scripts/generate-images-json.js
+
+      - name: Commit images.json (if changed)
+        run: |
+          git config user.name "GitHub Action"
+          git config user.email "action@github.com"
+          if git status --porcelain | grep -q images.json; then
+            git add images.json
+            git commit -m "Update images.json"
+            git push
+          else
+            echo "No changes to images.json"
+          fi

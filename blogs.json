@@ -1,0 +1,22 @@
+[
+  {
+    "url": "blog/ComfyUI.html",
+    "title": "My First Foray into ComfyUI",
+    "excerpt": "The term \"ComfyUI\" can sound intimidating. It conjures images of complex algorithms and self-aware systems running entire data centers. While that's the ultimate vision, my first real journey into ComfyUI started with a much more tangible, and frankly, frustrating problem: alert fatigue."
+  },
+  {
+    "url": "blog/my-first-aiops-post.html",
+    "title": "My First Foray into AIOps",
+    "excerpt": "The term \"AIOps\" can sound intimidating. It conjures images of complex algorithms and self-aware systems running entire data centers. While that's the ultimate vision, my first real journey into AIOps started with a much more tangible, and frankly, frustrating problem: alert fatigue."
+  },
+  {
+    "url": "blog/python-scripting-for-automation.html",
+    "title": "Python Scripting Best Practices for Automation",
+    "excerpt": "Python is the de facto language for automation engineering, but writing a script that \"just works\" is very different from writing a script that is robust, maintainable, and scalable. Over the years, I've developed a set of best practices that I apply to all my automation projects."
+  },
+  {
+    "url": "blog/python.html",
+    "title": "My First Foray into Python",
+    "excerpt": "The term \"Python\" can sound intimidating. It conjures images of complex algorithms and self-aware systems running entire data centers. While that's the ultimate vision, my first real journey into Python started with a much more tangible, and frankly, frustrating problem: alert fatigue."
+  }
+]

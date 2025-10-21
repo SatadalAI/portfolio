@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Python Scripting Best Practices - Satadal Dhara</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<script>document.body.classList.add('fade-in');</script>
+<div class="bg-animation"></div>
+<!-- Particles -->
+<div class="particle" style="left: 10%; animation-delay: 0s;"></div>
+    <div class="particle" style="left: 20%; animation-delay: 2s;"></div>
+    <div class="particle" style="left: 40%; animation-delay: 1s;"></div>
+    <div class="particle" style="left: 50%; animation-delay: 3s;"></div>
+    <div class="particle" style="left: 80%; animation-delay: 4.5s;"></div>
+    <div class="particle" style="left: 90%; animation-delay: 1.5s;"></div>
+
+<nav>
+    <ul>
+        <li><a href="../index.html" id="nav-home">Home</a></li>
+        <li><a href="../projects.html" id="nav-projects">Projects</a></li>
+        <li><a href="../blog.html" id="nav-blog">Blog</a></li>
+        <li><a href="../gallery.html" id="nav-gallery">Gallery</a></li>
+        <li><a href="../contact.html" id="nav-contact">Contact</a></li>
+    </ul>
+</nav>
+
+<!-- Page content preserved from SPA -->
+<div id="blog-post" class="page">
+        <div class="page-container">
+            <div class="container">
+                <article class="blog-article">
+                    <header>
+                        <h1 class="page-title">Python Scripting Best Practices for Automation</h1>
+                        <p class="article-meta">Published on December 01, 2023 by Satadal Dhara</p>
+                    </header>
+
+                    <section>
+                        <p>Python is the de facto language for automation engineering, but writing a script that "just works" is very different from writing a script that is robust, maintainable, and scalable. Over the years, I've developed a set of best practices that I apply to all my automation projects.</p>
+                        
+                        <h2>1. Configuration Management is Key</h2>
+                        <p>Never hardcode values like IP addresses, API keys, or file paths directly in your script. Use a separate configuration file (like `config.ini` or `config.yaml`) and Python's `configparser` or `PyYAML` library to read them. This makes your script portable and easy to update without touching the core logic.</p>
+
+                        <h2>2. Embrace Virtual Environments</h2>
+                        <p>Every project should live in its own virtual environment (`venv`). This isolates its dependencies from other projects and the global Python installation, preventing "dependency hell." It's a simple step that saves countless hours of debugging later.</p>
+
+                        <h2>3. Comprehensive Logging Over `print()`</h2>
+                        <p>While `print()` is great for quick debugging, it's terrible for production scripts. Use Python's built-in `logging` module. It allows you to set different logging levels (DEBUG, INFO, WARNING, ERROR), direct output to files, and format messages with timestamps, making it much easier to trace what your script did and when.</p>
+
+                        <h2>4. Write Functions and Keep Them Small</h2>
+                        <p>Break your script into small, single-purpose functions. A function should do one thing and do it well. This not only makes your code easier to read and understand but also promotes reusability and simplifies testing.</p>
+
+                        <blockquote>
+                            Clean, readable code is not a "nice-to-have"; it's a fundamental requirement for long-term maintenance and collaboration.
+                        </blockquote>
+
+                        <p>By adopting these practices, you can elevate your Python scripts from simple tools to reliable, enterprise-grade automation solutions. It's an investment in quality that always pays off.</p>
+
+                        <a href="../blog.html" class="back-link">← Back to All Articles</a>
+                    </section>
+                </article>
+            </div>
+        </div>
+    </div>
+
+<footer>
+        <p>&copy; 2025 Satadal Dhara. Crafted with passion and code.</p>
+    </footer>
+
+<script src="../script.js"></script>
+</body>
+</html>
