@@ -1,8 +1,8 @@
 [
   {
     "url": "blog/ComfyUI.html",
-    "title": "My First Foray into ComfyUI",
-    "excerpt": "The term \"ComfyUI\" can sound intimidating. It conjures images of complex algorithms and self-aware systems running entire data centers. While that's the ultimate vision, my first real journey into ComfyUI started with a much more tangible, and frankly, frustrating problem: alert fatigue."
+    "title": "Unlocking Creativity with ComfyUI: A Node-Based Workflow",
+    "excerpt": "Unlike traditional web interfaces, ComfyUI exposes the raw machinery of Stable Diffusion through a node-based graph architecture. Learn how this visual programming approach offers unparalleled flexibility for AI art generation."
   },
   {
     "url": "blog/my-first-aiops-post.html",
@@ -16,7 +16,7 @@
   },
   {
     "url": "blog/python.html",
-    "title": "My First Foray into Python",
-    "excerpt": "The term \"Python\" can sound intimidating. It conjures images of complex algorithms and self-aware systems running entire data centers. While that's the ultimate vision, my first real journey into Python started with a much more tangible, and frankly, frustrating problem: alert fatigue."
+    "title": "Python for Automation: Beyond the Basics",
+    "excerpt": "Writing a quick script is different from engineering a robust automation solution. Explore best practices for structuring Python projects, implementing robust error handling, and using proper logging for enterprise-grade automation."
   }
 ]
