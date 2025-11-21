@@ -12,114 +12,114 @@
  * The code below uses the API endpoints to populate gallery and blog pages.
  */
 
-        // Modal Functions (unchanged)
-        function openModal(imgSrc) {
-            const modal = document.getElementById('imageModal');
-            const modalImg = document.getElementById('modalImage');
-            if (!modal || !modalImg) return;
-            modal.style.display = 'block';
-            modalImg.src = imgSrc;
-        }
+// Modal Functions (unchanged)
+function openModal(imgSrc) {
+    const modal = document.getElementById('imageModal');
+    const modalImg = document.getElementById('modalImage');
+    if (!modal || !modalImg) return;
+    modal.style.display = 'block';
+    modalImg.src = imgSrc;
+}
 
-        function closeModal() {
-            const modal = document.getElementById('imageModal');
-            if (modal) modal.style.display = 'none';
-        }
+function closeModal() {
+    const modal = document.getElementById('imageModal');
+    if (modal) modal.style.display = 'none';
+}
 
-        window.onclick = function(event) {
-            const modal = document.getElementById('imageModal');
-            if (event.target == modal) {
-                closeModal();
-            }
-        };
+window.onclick = function (event) {
+    const modal = document.getElementById('imageModal');
+    if (event.target == modal) {
+        closeModal();
+    }
+};
 
-        // Custom smooth scroll function (unchanged)
-        function customSmoothScroll(targetId, duration) {
-            const targetElement = document.getElementById(targetId);
-            if (!targetElement) return;
+// Custom smooth scroll function (unchanged)
+function customSmoothScroll(targetId, duration) {
+    const targetElement = document.getElementById(targetId);
+    if (!targetElement) return;
 
-            const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset;
-            const startPosition = window.pageYOffset;
-            const distance = targetPosition - startPosition;
-            
-            if (distance === 0) return;
+    const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset;
+    const startPosition = window.pageYOffset;
+    const distance = targetPosition - startPosition;
 
-            let startTime = null;
-            const easeInOutQuad = (t, b, c, d) => {
-                t /= d / 2;
-                if (t < 1) return c / 2 * t * t + b;
-                t--;
-                return -c / 2 * (t * (t - 2) - 1) + b;
-            };
+    if (distance === 0) return;
 
-            function animation(currentTime) {
-                if (startTime === null) startTime = currentTime;
-                const timeElapsed = currentTime - startTime;
-                window.scrollTo(0, easeInOutQuad(timeElapsed, startPosition, distance, duration));
-                if (timeElapsed < duration) requestAnimationFrame(animation);
-            }
+    let startTime = null;
+    const easeInOutQuad = (t, b, c, d) => {
+        t /= d / 2;
+        if (t < 1) return c / 2 * t * t + b;
+        t--;
+        return -c / 2 * (t * (t - 2) - 1) + b;
+    };
 
-            requestAnimationFrame(animation);
-        }
+    function animation(currentTime) {
+        if (startTime === null) startTime = currentTime;
+        const timeElapsed = currentTime - startTime;
+        window.scrollTo(0, easeInOutQuad(timeElapsed, startPosition, distance, duration));
+        if (timeElapsed < duration) requestAnimationFrame(animation);
+    }
 
-        // --------------------------
-        // JSON-driven gallery loader
-        // --------------------------
-        async function updateGalleryFromApi() {
-            const gallery = document.getElementById('gallery-items') || document.getElementById('gallery');
-            if (!gallery) return;
-            gallery.innerHTML = '';
+    requestAnimationFrame(animation);
+}
 
-            try {
-                const resp = await fetch('images.json');
-                if (!resp.ok) throw new Error('images.json not found or returned ' + resp.status);
-                const images = await resp.json();
-                if (!Array.isArray(images)) throw new Error('images.json is not an array');
+// --------------------------
+// JSON-driven gallery loader
+// --------------------------
+async function updateGalleryFromApi() {
+    const gallery = document.getElementById('gallery-items') || document.getElementById('gallery');
+    if (!gallery) return;
+    gallery.innerHTML = '';
 
-                // Normalize entries: strings -> images/<name> unless already absolute/starting with images/
-                const normalized = images.map(src => {
-                    if (typeof src !== 'string') return null;
-                    if (/^(https?:)?\/\//.test(src) || src.startsWith('/')) return src;
-                    return src.startsWith('images/') ? src : `images/${src}`;
-                }).filter(Boolean);
+    try {
+        const resp = await fetch('images.json');
+        if (!resp.ok) throw new Error('images.json not found or returned ' + resp.status);
+        const images = await resp.json();
+        if (!Array.isArray(images)) throw new Error('images.json is not an array');
 
-                normalized.forEach((imgSrc, index) => {
-                    const item = document.createElement('div');
-                    item.className = 'gallery-item';
-                    item.onclick = () => openModal(imgSrc);
-                    item.innerHTML = `<img src="${imgSrc}" alt="Artwork ${index + 1}">`;
-                    gallery.appendChild(item);
-                });
-            } catch (err) {
-                console.warn('Could not load images.json:', err.message);
-                // Intentionally do not fall back to built-in lists per request.
-            }
-        }
+        // Normalize entries: strings -> images/<name> unless already absolute/starting with images/
+        const normalized = images.map(src => {
+            if (typeof src !== 'string') return null;
+            if (/^(https?:)?\/\//.test(src) || src.startsWith('/')) return src;
+            return src.startsWith('images/') ? src : `images/${src}`;
+        }).filter(Boolean);
 
-        // --------------------------
-        // JSON-driven blog loader
-        // --------------------------
-        async function populateBlogGrid() {
-            const blogGrid = document.querySelector('.blog-grid');
-            if (!blogGrid) return;
-            blogGrid.innerHTML = '';
+        normalized.forEach((imgSrc, index) => {
+            const item = document.createElement('div');
+            item.className = 'gallery-item';
+            item.onclick = () => openModal(imgSrc);
+            item.innerHTML = `<img src="${imgSrc}" alt="Artwork ${index + 1}">`;
+            gallery.appendChild(item);
+        });
+    } catch (err) {
+        console.warn('Could not load images.json:', err.message);
+        // Intentionally do not fall back to built-in lists per request.
+    }
+}
 
-            try {
-                const resp = await fetch('blogs.json');
-                if (!resp.ok) throw new Error('blogs.json not found or returned ' + resp.status);
-                const posts = await resp.json();
-                if (!Array.isArray(posts)) throw new Error('blogs.json is not an array');
+// --------------------------
+// JSON-driven blog loader
+// --------------------------
+async function populateBlogGrid() {
+    const blogGrid = document.querySelector('.blog-grid');
+    if (!blogGrid) return;
+    blogGrid.innerHTML = '';
 
-                // Each entry can be a string (url) or object { url, title, excerpt }
-                posts.forEach((entry) => {
-                    const post = (typeof entry === 'string') ? { url: entry, title: '', excerpt: '' } : { ...entry };
-                    post.title = post.title || '';
-                    post.excerpt = post.excerpt || '';
+    try {
+        const resp = await fetch('blogs.json');
+        if (!resp.ok) throw new Error('blogs.json not found or returned ' + resp.status);
+        const posts = await resp.json();
+        if (!Array.isArray(posts)) throw new Error('blogs.json is not an array');
 
-                    const card = document.createElement('div');
-                    card.className = 'blog-card';
-                    card.dataset.postUrl = post.url;
-                    card.innerHTML = `
+        // Each entry can be a string (url) or object { url, title, excerpt }
+        posts.forEach((entry) => {
+            const post = (typeof entry === 'string') ? { url: entry, title: '', excerpt: '' } : { ...entry };
+            post.title = post.title || '';
+            post.excerpt = post.excerpt || '';
+
+            const card = document.createElement('div');
+            card.className = 'blog-card';
+            card.dataset.postUrl = post.url;
+            card.innerHTML = `
                         <div class="blog-image">📝</div>
                         <div class="blog-content">
                             <div class="blog-meta"><span>📄</span></div>
@@ -128,53 +128,104 @@
                             <a href="${post.url}" class="read-more">Read More</a>
                         </div>
                     `;
-                    card.addEventListener('click', function() {
-                        const link = card.querySelector('.read-more');
-                        if (link && link.href) window.location.href = link.href;
-                    });
-                    blogGrid.appendChild(card);
-                });
-            } catch (err) {
-                console.warn('Could not load blogs.json:', err.message);
-                // No fallback per request.
+            card.addEventListener('click', function () {
+                const link = card.querySelector('.read-more');
+                if (link && link.href) window.location.href = link.href;
+            });
+            blogGrid.appendChild(card);
+        });
+    } catch (err) {
+        console.warn('Could not load blogs.json:', err.message);
+        // No fallback per request.
+    }
+}
+
+// Analytics & other behaviors (reuse existing functions if present)
+let analyticsAnimated = false;
+
+function animateCounter(id, start, end, duration) {
+    const element = document.getElementById(id);
+    if (!element) return;
+
+    const range = end - start;
+    const increment = end > start ? 1 : -1;
+    const stepTime = Math.abs(Math.floor(duration / (range || 1)));
+    let current = start;
+
+    const timer = setInterval(() => {
+        current += increment;
+        if (id === 'visitorCount') {
+            element.textContent = current.toLocaleString();
+        } else {
+            element.textContent = current + '+';
+        }
+
+        if (current === end) clearInterval(timer);
+    }, stepTime);
+}
+
+function animateAnalytics() {
+    if (analyticsAnimated) return;
+    analyticsAnimated = true;
+    animateCounter('projectCount', 0, 15, 2000);
+    animateCounter('experienceYears', 0, 4, 2000);
+    animateCounter('artworkCount', 0, 50, 2000);
+    const visitors = Math.floor(Math.random() * 500) + 100;
+    animateCounter('visitorCount', 0, visitors, 2000);
+}
+
+/*
+ * ===================================================================
+ *  3D TILT EFFECT
+ * ===================================================================
+ */
+function initTiltEffect() {
+    const cards = document.querySelectorAll('.project-card, .blog-card');
+
+    cards.forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+
+            const rotateX = ((y - centerY) / centerY) * -10; // Max 10deg rotation
+            const rotateY = ((x - centerX) / centerX) * 10;
+
+            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+        });
+
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
+        });
+    });
+}
+
+// Initialize effects when DOM is loaded
+document.addEventListener('DOMContentLoaded', function () {
+    // Theme Toggle Logic
+    const themeToggle = document.getElementById('checkbox');
+    if (themeToggle) {
+        // Check for saved preference
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'artist') {
+            document.body.setAttribute('data-theme', 'artist');
+            themeToggle.checked = true;
+        }
+
+        themeToggle.addEventListener('change', function () {
+            if (this.checked) {
+                document.body.setAttribute('data-theme', 'artist');
+                localStorage.setItem('theme', 'artist');
+            } else {
+                document.body.removeAttribute('data-theme');
+                localStorage.setItem('theme', 'engineer');
             }
-        }
+        });
+    }
 
-        // Analytics & other behaviors (reuse existing functions if present)
-        let analyticsAnimated = false;
-
-        function animateCounter(id, start, end, duration) {
-            const element = document.getElementById(id);
-            if (!element) return;
-            
-            const range = end - start;
-            const increment = end > start ? 1 : -1;
-            const stepTime = Math.abs(Math.floor(duration / (range || 1)));
-            let current = start;
-
-            const timer = setInterval(() => {
-                current += increment;
-                if (id === 'visitorCount') {
-                    element.textContent = current.toLocaleString();
-                } else {
-                    element.textContent = current + '+';
-                }
-                
-                if (current === end) clearInterval(timer);
-            }, stepTime);
-        }
-
-        function animateAnalytics() {
-            if (analyticsAnimated) return;
-            analyticsAnimated = true;
-            animateCounter('projectCount', 0, 15, 2000);
-            animateCounter('experienceYears', 0, 4, 2000);
-            animateCounter('artworkCount', 0, 50, 2000);
-            const visitors = Math.floor(Math.random() * 500) + 100;
-            animateCounter('visitorCount', 0, visitors, 2000);
-        }
-
-document.addEventListener('DOMContentLoaded', function() {
     // Populate gallery if on gallery page
     if (document.getElementById('gallery-items') || document.getElementById('gallery')) {
         updateGalleryFromApi();
@@ -203,7 +254,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Smooth scroll for anchor links on the home page
         if (currentPathname === 'index.html' && linkHref.startsWith('#')) {
-            link.addEventListener('click', function(e) {
+            link.addEventListener('click', function (e) {
                 e.preventDefault();
                 const targetId = this.getAttribute('href').substring(1);
                 customSmoothScroll(targetId, 1200);
@@ -225,16 +276,6 @@ document.addEventListener('DOMContentLoaded', function() {
         observer.observe(analyticsSection);
     }
 
-    // Smooth page transitions for internal links
-    const internalLinks = document.querySelectorAll('a[href^="/"], a[href^="."]');
-    internalLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
-            const href = this.getAttribute('href');
-            if (href && !href.startsWith('#') && href !== window.location.pathname.split('/').pop()) {
-                e.preventDefault();
-                document.body.classList.remove('fade-in');
-                setTimeout(() => { window.location.href = href; }, 500);
-            }
-        });
-    });
+    // Initialize tilt effect
+    initTiltEffect();
 });
