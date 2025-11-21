@@ -12,33 +12,41 @@ This project is a personal portfolio website for Satadal Dhara, showcasing skill
 ## Project Structure
 - **Root**:
   - `index.html`: The main landing page containing the Hero, About, Journey, and Analytics sections.
-  - `projects.html`, `blog.html`, `gallery.html`, `contact.html`: Separate pages for specific sections (though some navigation logic suggests a SPA-like feel, these exist as standalone files).
-  - `style.css`: The central stylesheet containing all visual styles, animations, and responsive rules.
-  - `script.js`: The main JavaScript file handling logic for the gallery, blog, modals, and scroll animations.
-  - `images.json`: Array of image filenames/paths for the gallery.
-  - `blogs.json`: Array of blog post objects (title, excerpt, url).
+  - `projects.html`, `blog.html`, `gallery.html`, `contact.html`: Separate pages for specific sections.
+  - `gemini.md`: Project documentation and context.
+- **Assets (`assets/`)**:
+  - `css/style.css`: Central stylesheet with Engineer/Artist themes.
+  - `js/script.js`: Main logic for gallery, blog, modals, tilt effects, and theme toggling.
+  - `img/`: Stores gallery images and assets.
+  - `data/`: JSON data files (`images.json`, `blogs.json`).
+  - `satadal.jpg`: Profile picture.
 - **Directories**:
-  - `images/`: Stores image assets.
-  - `blog/`: Contains individual blog post HTML files (e.g., `blog/post1.html`).
+  - `blog/`: Contains individual blog post HTML files.
 
 ## Key Features
-1.  **Dynamic Content Loading**:
-    - **Gallery**: `updateGalleryFromApi()` fetches `images.json` and renders the gallery grid dynamically.
-    - **Blog**: `populateBlogGrid()` fetches `blogs.json` and creates blog cards dynamically.
-2.  **Animations**:
-    - CSS animations for background movement (`bg-animation`), floating particles, and element fade-ins.
-    - JavaScript-driven number counters for the "Impact" section.
-    - Smooth scrolling for navigation.
-3.  **Responsive Design**:
-    - Mobile-friendly navigation and layout adjustments via CSS media queries.
-4.  **Interactive Elements**:
-    - Image modal for viewing gallery items in full size.
-    - Hover effects on cards and buttons.
+1.  **Dual Persona Theme**:
+    - **Engineer Mode (Default)**: Professional, clean, dark theme with "Projects" navigation.
+    - **Artist Mode**: Vibrant, expressive, warm theme with "Gallery" navigation replacing Projects.
+    - **Theme Toggle**: Interactive switch in the Island Navigation.
+2.  **Island Navigation**:
+    - Floating, centralized navigation bar.
+    - Responsive design with active state highlighting.
+    - Dynamic link ordering: Home -> Projects/Gallery -> Blog -> Contact.
+3.  **Dynamic Content Loading**:
+    - **Gallery**: Fetches `assets/data/images.json` to render artwork.
+    - **Blog**: Fetches `assets/data/blogs.json` to render posts.
+4.  **Animations & Effects**:
+    - **3D Tilt**: Interactive tilt effect on project and blog cards.
+    - **Particles**: Background particle animation.
+    - **Scroll Animations**: Smooth scrolling and fade-in effects.
+    - **Analytics**: Animated number counters.
+5.  **Responsive Design**:
+    - Mobile-friendly layout with adjusted navigation and spacing.
 
 ## Development & Usage
-- **Running Locally**: Since it is a static site, it can be served using any static file server (e.g., VS Code Live Server, `python -m http.server`, `npx serve`).
-- **Deployment**: The presence of `CNAME` suggests it is likely deployed on GitHub Pages or a similar static hosting service.
+- **Running Locally**: Serve using any static file server (e.g., `python -m http.server`, `npx serve`).
+- **Deployment**: Static hosting (e.g., GitHub Pages).
 
 ## Notes
-- The `script.js` mentions a "SITE-WIDE DATA SOURCE (now backed by simple server API)" but the implementation fetches local JSON files, implying a serverless/static approach.
-- `script_original.js` appears to be a backup or older version of the logic.
+- The project uses a clean `assets/` directory structure for better organization.
+- Navigation order changes based on the selected theme (Engineer vs Artist).

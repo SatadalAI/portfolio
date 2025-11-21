@@ -1,18 +1,16 @@
 /*
  * ===================================================================
- *  SITE-WIDE DATA SOURCE (now backed by simple server API)
+ *  SITE-WIDE DATA SOURCE
  * ===================================================================
- * The arrays were removed — the client now fetches /api/images and /api/blogs.
  */
 
 /*
  * ===================================================================
  *  APPLICATION LOGIC
  * ===================================================================
- * The code below uses the API endpoints to populate gallery and blog pages.
  */
 
-// Modal Functions (unchanged)
+// Modal Functions
 function openModal(imgSrc) {
     const modal = document.getElementById('imageModal');
     const modalImg = document.getElementById('modalImage');
@@ -33,7 +31,7 @@ window.onclick = function (event) {
     }
 };
 
-// Custom smooth scroll function (unchanged)
+// Custom smooth scroll function
 function customSmoothScroll(targetId, duration) {
     const targetElement = document.getElementById(targetId);
     if (!targetElement) return;
@@ -71,16 +69,16 @@ async function updateGalleryFromApi() {
     gallery.innerHTML = '';
 
     try {
-        const resp = await fetch('images.json');
+        const resp = await fetch('assets/data/images.json');
         if (!resp.ok) throw new Error('images.json not found or returned ' + resp.status);
         const images = await resp.json();
         if (!Array.isArray(images)) throw new Error('images.json is not an array');
 
-        // Normalize entries: strings -> images/<name> unless already absolute/starting with images/
+        // Normalize entries: strings -> assets/img/<name> unless already absolute/starting with assets/img/
         const normalized = images.map(src => {
             if (typeof src !== 'string') return null;
             if (/^(https?:)?\/\//.test(src) || src.startsWith('/')) return src;
-            return src.startsWith('images/') ? src : `images/${src}`;
+            return src.startsWith('assets/img/') ? src : `assets/img/${src}`;
         }).filter(Boolean);
 
         normalized.forEach((imgSrc, index) => {
@@ -92,7 +90,6 @@ async function updateGalleryFromApi() {
         });
     } catch (err) {
         console.warn('Could not load images.json:', err.message);
-        // Intentionally do not fall back to built-in lists per request.
     }
 }
 
@@ -105,7 +102,7 @@ async function populateBlogGrid() {
     blogGrid.innerHTML = '';
 
     try {
-        const resp = await fetch('blogs.json');
+        const resp = await fetch('assets/data/blogs.json');
         if (!resp.ok) throw new Error('blogs.json not found or returned ' + resp.status);
         const posts = await resp.json();
         if (!Array.isArray(posts)) throw new Error('blogs.json is not an array');
@@ -136,11 +133,10 @@ async function populateBlogGrid() {
         });
     } catch (err) {
         console.warn('Could not load blogs.json:', err.message);
-        // No fallback per request.
     }
 }
 
-// Analytics & other behaviors (reuse existing functions if present)
+// Analytics & other behaviors
 let analyticsAnimated = false;
 
 function animateCounter(id, start, end, duration) {
@@ -236,7 +232,7 @@ document.addEventListener('DOMContentLoaded', function () {
         populateBlogGrid();
     }
 
-    // Navigation active link logic (preserved)
+    // Navigation active link logic
     const links = document.querySelectorAll('nav a');
     const currentPathname = window.location.pathname.split('/').pop() || 'index.html';
     const currentHash = window.location.hash;
