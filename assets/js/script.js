@@ -160,14 +160,75 @@ function animateCounter(id, start, end, duration) {
     }, stepTime);
 }
 
-function animateAnalytics() {
+// Calculate years of experience from December 7, 2020
+function calculateExperience() {
+    const startDate = new Date('2020-12-07');
+    const currentDate = new Date();
+    const diffTime = Math.abs(currentDate - startDate);
+    const diffYears = diffTime / (1000 * 60 * 60 * 24 * 365.25);
+    return Math.floor(diffYears);
+}
+
+// Get or initialize visitor count
+function getVisitorCount() {
+    // Check if this is a new visitor
+    const hasVisited = localStorage.getItem('portfolio_visited');
+    let totalVisitors = parseInt(localStorage.getItem('portfolio_visitor_count') || '0');
+    
+    if (!hasVisited) {
+        // New visitor
+        totalVisitors++;
+        localStorage.setItem('portfolio_visitor_count', totalVisitors.toString());
+        localStorage.setItem('portfolio_visited', 'true');
+    }
+    
+    return totalVisitors;
+}
+
+// Count projects dynamically
+async function countProjects() {
+    // Try to count from projects.html via fetch
+    try {
+        const response = await fetch('projects.html');
+        const html = await response.text();
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+        const projectCards = doc.querySelectorAll('.project-card');
+        return projectCards.length || 15; // Fallback to 15 if can't count
+    } catch (error) {
+        console.warn('Could not count projects:', error);
+        return 15; // Fallback value
+    }
+}
+
+// Count artworks from gallery
+async function countArtworks() {
+    try {
+        const resp = await fetch('assets/data/images.json');
+        if (!resp.ok) throw new Error('images.json not found');
+        const images = await resp.json();
+        return Array.isArray(images) ? images.length : 50;
+    } catch (error) {
+        console.warn('Could not count artworks:', error);
+        return 50; // Fallback value
+    }
+}
+
+async function animateAnalytics() {
     if (analyticsAnimated) return;
     analyticsAnimated = true;
-    animateCounter('projectCount', 0, 15, 2000);
-    animateCounter('experienceYears', 0, 4, 2000);
-    animateCounter('artworkCount', 0, 50, 2000);
-    const visitors = Math.floor(Math.random() * 500) + 100;
-    animateCounter('visitorCount', 0, visitors, 2000);
+    
+    // Get dynamic counts
+    const projectCount = await countProjects();
+    const experienceYears = calculateExperience();
+    const artworkCount = await countArtworks();
+    const visitorCount = getVisitorCount();
+    
+    // Animate counters with real values
+    animateCounter('projectCount', 0, projectCount, 2000);
+    animateCounter('experienceYears', 0, experienceYears, 2000);
+    animateCounter('artworkCount', 0, artworkCount, 2000);
+    animateCounter('visitorCount', 0, visitorCount, 2000);
 }
 
 /*

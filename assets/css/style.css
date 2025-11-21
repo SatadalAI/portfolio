@@ -2,19 +2,19 @@
 
 :root {
     /* Cyber-Minimalist Palette - Engineer Mode (Default) */
-    --bg-core: #050505;
-    --bg-surface: #0a0a0a;
-    --bg-glass: rgba(10, 10, 10, 0.7);
+    --bg-core: #0C1222;
+    --bg-surface: #131B2E;
+    --bg-glass: rgba(19, 27, 46, 0.7);
 
-    --primary: #B026FF;
-    --secondary: #00F0FF;
-    --accent: #7000FF;
+    --primary: #06B6D4;
+    --secondary: #0EA5E9;
+    --accent: #22D3EE;
 
     --text-main: #ffffff;
     --text-muted: #94a3b8;
 
-    --gradient-main: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-    --gradient-glow: radial-gradient(circle at center, rgba(176, 38, 255, 0.15) 0%, transparent 70%);
+    --gradient-main: linear-gradient(135deg, #06B6D4 0%, #0EA5E9 100%);
+    --gradient-glow: radial-gradient(circle at center, rgba(6, 182, 212, 0.15) 0%, transparent 70%);
 
     /* Typography */
     --font-heading: 'Outfit', sans-serif;
@@ -36,14 +36,14 @@
 
 /* Artist Mode Theme - WARM & COLORFUL */
 [data-theme="artist"] {
-    --primary: #FF0055;
-    --secondary: #FFD700;
-    --accent: #FF4400;
-    --bg-core: #2a0820;
-    --bg-surface: #3a0a30;
-    --bg-glass: rgba(42, 8, 32, 0.7);
-    --gradient-main: linear-gradient(135deg, #FF0055 0%, #FF4400 100%);
-    --gradient-glow: radial-gradient(circle at center, rgba(255, 0, 85, 0.2) 0%, transparent 70%);
+    --primary: #FB7185;
+    --secondary: #FFA07A;
+    --accent: #FF6B6B;
+    --bg-core: #1E1B4B;
+    --bg-surface: #2D2654;
+    --bg-glass: rgba(30, 27, 75, 0.7);
+    --gradient-main: linear-gradient(135deg, #FB7185 0%, #FFA07A 100%);
+    --gradient-glow: radial-gradient(circle at center, rgba(251, 113, 133, 0.2) 0%, transparent 70%);
 
     /* Artist mode - softer, more expressive styling */
     --radius-sm: 12px;
@@ -57,9 +57,9 @@
 
 /* Artist mode warm background animation */
 [data-theme="artist"] .bg-animation {
-    background: radial-gradient(circle at 20% 50%, rgba(255, 0, 85, 0.12) 0%, transparent 50%),
-        radial-gradient(circle at 80% 80%, rgba(255, 68, 0, 0.12) 0%, transparent 50%),
-        radial-gradient(circle at 50% 20%, rgba(255, 215, 0, 0.08) 0%, transparent 50%);
+    background: radial-gradient(circle at 20% 50%, rgba(251, 113, 133, 0.12) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(255, 160, 122, 0.12) 0%, transparent 50%),
+        radial-gradient(circle at 50% 20%, rgba(255, 107, 107, 0.08) 0%, transparent 50%);
 }
 
 /* ===================================================================
