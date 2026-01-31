@@ -2,21 +2,25 @@
   {
     "url": "blog/ComfyUI.html",
     "title": "Unlocking Creativity with ComfyUI: A Node-Based Workflow",
-    "excerpt": "Unlike traditional web interfaces, ComfyUI exposes the raw machinery of Stable Diffusion through a node-based graph architecture. Learn how this visual programming approach offers unparalleled flexibility for AI art generation."
+    "excerpt": "Unlike traditional web interfaces, ComfyUI exposes the raw machinery of Stable Diffusion through a node-based graph architecture. Learn how this visual programming approach offers unparalleled flexibility.",
+    "image": "assets/img/thumbnails/blog_comfyui.png"
   },
   {
     "url": "blog/my-first-aiops-post.html",
-    "title": "My First Foray into AIOps",
-    "excerpt": "The term \"AIOps\" can sound intimidating. It conjures images of complex algorithms and self-aware systems running entire data centers. While that's the ultimate vision, my first real journey into AIOps started with a much more tangible, and frankly, frustrating problem: alert fatigue."
+    "title": "My First Foray into AIOps: Tackling Alert Fatigue",
+    "excerpt": "My journey into AIOps started with a tangible frustrating problem: alert fatigue. See how AI can transform chaotic system monitoring into actionable intelligence.",
+    "image": "assets/img/thumbnails/blog_aiops.png"
   },
   {
     "url": "blog/python-scripting-for-automation.html",
     "title": "Python Scripting Best Practices for Automation",
-    "excerpt": "Python is the de facto language for automation engineering, but writing a script that \"just works\" is very different from writing a script that is robust, maintainable, and scalable. Over the years, I've developed a set of best practices that I apply to all my automation projects."
+    "excerpt": "Writing a script that \"just works\" is different from engineering a robust solution. Discover essential best practices for scalable and maintainable automation scripts.",
+    "image": "assets/img/thumbnails/blog_python.png"
   },
   {
     "url": "blog/python.html",
     "title": "Python for Automation: Beyond the Basics",
-    "excerpt": "Writing a quick script is different from engineering a robust automation solution. Explore best practices for structuring Python projects, implementing robust error handling, and using proper logging for enterprise-grade automation."
+    "excerpt": "Explore advanced techniques for structuring Python projects, implementing robust error handling, and using proper logging for enterprise-grade automation systems.",
+    "image": "assets/img/thumbnails/blog_python.png"
   }
 ]

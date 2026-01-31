@@ -11,6 +11,7 @@
 <body>
     <script>document.body.classList.add('fade-in');</script>
     <div class="bg-animation"></div>
+    <canvas id="neural-network-canvas"></canvas>
     <!-- Particles -->
     <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
     <div class="particle" style="left: 20%; animation-delay: 2s;"></div>
@@ -22,7 +23,7 @@
     <!-- Island Navigation -->
     <nav class="island-nav">
         <div class="nav-container">
-                        <ul class="nav-links">
+            <ul class="nav-links">
                 <li><a href="index.html" id="nav-home">Home</a></li>
                 <li><a href="projects.html" id="nav-projects" class="active">Projects</a></li>
                 <li><a href="gallery.html" id="nav-gallery">Gallery</a></li>
@@ -49,88 +50,46 @@
 
             <div class="projects-grid">
                 <div class="project-card">
-                    <div class="project-image">🚀</div>
+                    <div class="project-image">
+                        <img src="assets/img/thumbnails/sata_utility_node.png" alt="SATA_UtilityNode"
+                            style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
                     <div class="project-content">
-                        <h3>Project Name 1</h3>
-                        <p>Brief description of your first GitHub project. What problem does it solve? What technologies
-                            did you use?</p>
+                        <h3>SATA_UtilityNode</h3>
+                        <p>A comprehensive suite of custom nodes for ComfyUI, featuring Upscale Machine, Prompt Machine,
+                            Latent Machine, and advanced resolution controls for enhanced image generation workflows.
+                        </p>
                         <div class="project-tags">
                             <span class="tag">Python</span>
-                            <span class="tag">Automation</span>
-                            <span class="tag">API</span>
+                            <span class="tag">ComfyUI</span>
+                            <span class="tag">AI</span>
+                            <span class="tag">Image Processing</span>
                         </div>
                         <div class="project-links">
-                            <a href="#" target="_blank" class="project-link">GitHub</a>
-                            <a href="#" target="_blank" class="project-link">Live Demo</a>
+                            <a href="https://github.com/SatadalAI/SATA_UtilityNode" target="_blank"
+                                class="project-link">GitHub</a>
                         </div>
                     </div>
                 </div>
 
                 <div class="project-card">
-                    <div class="project-image">⚡</div>
-                    <div class="project-content">
-                        <h3>Project Name 2</h3>
-                        <p>Brief description of your second GitHub project. Highlight key features and achievements.</p>
-                        <div class="project-tags">
-                            <span class="tag">JavaScript</span>
-                            <span class="tag">React</span>
-                            <span class="tag">Node.js</span>
-                        </div>
-                        <div class="project-links">
-                            <a href="#" target="_blank" class="project-link">GitHub</a>
-                            <a href="#" target="_blank" class="project-link">Live Demo</a>
-                        </div>
+                    <div class="project-image">
+                        <img src="assets/img/thumbnails/pendulum_game.png" alt="Pendulum Game"
+                            style="width: 100%; height: 100%; object-fit: cover;">
                     </div>
-                </div>
-
-                <div class="project-card">
-                    <div class="project-image">🔧</div>
                     <div class="project-content">
-                        <h3>Project Name 3</h3>
-                        <p>Brief description of your third GitHub project. What makes this project unique?</p>
-                        <div class="project-tags">
-                            <span class="tag">Python</span>
-                            <span class="tag">Machine Learning</span>
-                            <span class="tag">Data Science</span>
-                        </div>
-                        <div class="project-links">
-                            <a href="#" target="_blank" class="project-link">GitHub</a>
-                            <a href="#" target="_blank" class="project-link">Live Demo</a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="project-card">
-                    <div class="project-image">💡</div>
-                    <div class="project-content">
-                        <h3>Project Name 4</h3>
-                        <p>Brief description of your fourth GitHub project. Share the impact or results achieved.</p>
-                        <div class="project-tags">
-                            <span class="tag">DevOps</span>
-                            <span class="tag">CI/CD</span>
-                            <span class="tag">Docker</span>
-                        </div>
-                        <div class="project-links">
-                            <a href="#" target="_blank" class="project-link">GitHub</a>
-                            <a href="#" target="_blank" class="project-link">Live Demo</a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="project-card">
-                    <div class="project-image">🎮</div>
-                    <div class="project-content">
-                        <h3>Your Game Title</h3>
-                        <p>Experience an immersive gaming adventure! This game showcases my skills in game development,
-                            featuring engaging gameplay mechanics, stunning visuals, and interactive elements.</p>
+                        <h3>Pendulum</h3>
+                        <p>A physics-based web game where you swing a pendulum to hit targets. Features a custom physics
+                            engine, power-ups, mobile optimization, and 10+ levels of increasing difficulty.</p>
                         <div class="project-tags">
                             <span class="tag">JavaScript</span>
                             <span class="tag">HTML5 Canvas</span>
+                            <span class="tag">Physics Engine</span>
                             <span class="tag">Game Dev</span>
                         </div>
                         <div class="project-links">
-                            <a href="#" target="_blank" class="project-link">GitHub</a>
-                            <a href="https://your-game.netlify.app" target="_blank" class="project-link">Play Now</a>
+                            <a href="https://github.com/SatadalAI/Pendulum" target="_blank"
+                                class="project-link">GitHub</a>
                         </div>
                     </div>
                 </div>

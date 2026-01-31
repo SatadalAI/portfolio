@@ -1,6 +1,35 @@
 [
-  "Heart&Mind.png",
-  "Horse.png",
-  "shadow.png",
-  "Unicorn.png"
+  {
+    "id": "digital-art",
+    "title": "Digital Creations",
+    "description": "A collection of digital artworks and concepts.",
+    "cover": "assets/img/gallery/digital-art/Heart&Mind.png",
+    "images": [
+      "assets/img/gallery/digital-art/Heart&Mind.png",
+      "assets/img/gallery/digital-art/Horse.png",
+      "assets/img/gallery/digital-art/shadow.png",
+      "assets/img/gallery/digital-art/Unicorn.png"
+    ]
+  },
+  {
+    "id": "concept-sketches",
+    "title": "Concept Sketches",
+    "description": "Rough ideas, drafts, and work in progress.",
+    "cover": "assets/img/thumbnails/album_placeholder.png",
+    "images": []
+  },
+  {
+    "id": "3d-renders",
+    "title": "3D Renders",
+    "description": "Explorations in 3D modeling and lighting.",
+    "cover": "assets/img/thumbnails/album_placeholder.png",
+    "images": []
+  },
+  {
+    "id": "photography",
+    "title": "Photography",
+    "description": "Capturing the world through my lens.",
+    "cover": "assets/img/thumbnails/album_placeholder.png",
+    "images": []
+  }
 ]
