@@ -6,6 +6,36 @@
 
 /*
  * ===================================================================
+ *  PAGE TRANSITIONS
+ * ===================================================================
+ */
+
+// Handle smooth page transitions
+function initPageTransitions() {
+    document.querySelectorAll('a').forEach(link => {
+        // Only handle internal links
+        if (link.hostname === window.location.hostname &&
+            !link.href.includes('#') &&
+            !link.hasAttribute('download') &&
+            !link.target) {
+
+            link.addEventListener('click', function (e) {
+                e.preventDefault();
+                const href = this.href;
+
+                document.body.classList.remove('fade-in');
+                document.body.classList.add('fade-out');
+
+                setTimeout(() => {
+                    window.location.href = href;
+                }, 300);
+            });
+        }
+    });
+}
+
+/*
+ * ===================================================================
  *  APPLICATION LOGIC
  * ===================================================================
  */
@@ -229,7 +259,7 @@ async function updateGalleryFromApi() {
 
             card.innerHTML = `
                 <div class="album-cover">
-                    <img src="${album.cover || 'assets/img/thumbnails/album_placeholder.png'}" alt="${album.title}">
+                    <img src="${album.cover || 'assets/img/thumbnails/album_placeholder.png'}" alt="${album.title}" loading="lazy">
                     <div class="album-overlay">
                         <span class="view-album-btn">View Album</span>
                     </div>
@@ -279,7 +309,7 @@ async function updateGalleryFromApi() {
             // Stagger animation
             item.style.animationDelay = `${index * 0.1}s`;
             item.onclick = () => openModal(imgSrc);
-            item.innerHTML = `<img src="${imgSrc}" alt="${album.title} ${index + 1}">`;
+            item.innerHTML = `<img src="${imgSrc}" alt="${album.title} ${index + 1}" loading="lazy">`;
             galleryItems.appendChild(item);
         });
     }
@@ -310,7 +340,7 @@ async function populateBlogGrid() {
             card.dataset.postUrl = post.url;
             // Use image if available, else fallback emoji
             const imgContent = post.image
-                ? `<img src="${post.image}" alt="${post.title}" style="width: 100%; height: 100%; object-fit: cover;">
+                ? `<img src="${post.image}" alt="${post.title}" loading="lazy" style="width: 100%; height: 100%; object-fit: cover;">
                    <div class="icon">📝</div>`
                 : `<div class="icon">📝</div>`;
 
@@ -561,4 +591,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Initialize Neural Network Background
     initNeuralNetwork();
+
+    // Initialize Page Transitions
+    initPageTransitions();
 });
