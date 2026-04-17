@@ -86,6 +86,51 @@
     --nn-opacity: 0.5;
 }
 
+/* ====================================================================
+ * AI MODE VISUAL Enhancements
+ * ====================================================================*/
+body[data-theme-mode="ai_enhanced"] {
+    --color-bg-base:        #020603;
+    --color-bg-raised:      #050a06;
+    --color-bg-overlay:     #08120a;
+    --color-bg-glass:       rgba(2, 6, 3, 0.85);
+
+    --color-text-primary:   #33ff33;
+    --color-text-secondary: #00cc00;
+    --color-text-muted:     #006600;
+    --color-text-inverse:   #000000;
+    --color-text-heading:   #66ff66;
+
+    --color-accent-primary:    #00ff00;
+    --color-accent-secondary:  #ff00ff;
+    --color-accent-tertiary:   #00ffff;
+    --color-accent-warm:       #ffff00;
+
+    --color-border-subtle:  rgba(0, 255, 0, 0.15);
+    --color-border-default: rgba(0, 255, 0, 0.3);
+    --color-border-strong:  rgba(0, 255, 0, 0.6);
+
+    --shadow-glow: 0 0 30px rgba(0, 255, 0, 0.3);
+    --gradient-brand: linear-gradient(135deg, #00ff00 0%, #ff00ff 50%, #00ffff 100%);
+    --gradient-surface: linear-gradient(145deg, rgba(8, 20, 10, 0.95), rgba(0, 0, 0, 0.98));
+
+    --font-heading: 'Courier New', Courier, monospace;
+    --font-body:    'Courier New', Courier, monospace;
+
+    /* Matrix rain vibe */
+    --nn-node-color: rgba(0, 255, 0, 0.8);
+    --nn-glow-color: rgba(0, 255, 0, 0.4);
+    --nn-line-color: rgba(0, 255, 0, 0.5);
+    --nn-opacity: 0.85;
+
+    /* UI Tech Shape (Disable border radius for sharp UI) */
+    --radius-sm:   0px;
+    --radius-md:   0px;
+    --radius-lg:   0px;
+    --radius-xl:   0px;
+    --radius-full: 0px;
+}
+
 
 
 /* ====================================================================
@@ -114,6 +159,7 @@ html {
     scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    background-color: var(--color-bg-base);
 }
 
 body {
@@ -153,21 +199,21 @@ img {
  * ====================================================================*/
 
 body.fade-in {
-    animation: pageEnter 0.6s var(--ease-out) forwards;
+    animation: pageEnter 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 body.fade-out {
-    animation: pageExit 0.3s ease-in forwards;
+    animation: pageExit 0.3s cubic-bezier(0.55, 0.085, 0.68, 0.53) forwards;
 }
 
 @keyframes pageEnter {
-    from { opacity: 0; transform: translateY(12px); }
-    to   { opacity: 1; transform: translateY(0); }
+    from { opacity: 0; transform: scale(0.99) translateY(10px); filter: blur(8px); }
+    to   { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
 }
 
 @keyframes pageExit {
-    from { opacity: 1; transform: translateY(0); }
-    to   { opacity: 0; transform: translateY(-8px); }
+    from { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
+    to   { opacity: 0; transform: scale(0.99) translateY(-10px); filter: blur(5px); }
 }
 
 /* Theme transition glitch — triggers on theme switch */
@@ -510,9 +556,9 @@ input:checked + .slider:before {
     transform: scale(1.05);
 }
 
-/* AI mode photo filter */
+/* AI mode photo filter (Removed to preserve original picture colors) */
 body[data-theme-mode="ai_enhanced"] .profile-picture img {
-    filter: sepia(0.6) hue-rotate(180deg) contrast(1.15) brightness(1.1);
+    /* filter: sepia(0.6) hue-rotate(180deg) contrast(1.15) brightness(1.1); */
 }
 
 .hero-name {
@@ -705,25 +751,28 @@ body[data-theme-mode="ai_enhanced"] .profile-picture img {
 }
 
 /* ====================================================================
- * TIMELINE / JOURNEY SECTION
+ * TIMELINE / JOURNEY SECTION (DATA PIPELINE)
  * ====================================================================*/
 
 .timeline {
     position: relative;
-    max-width: 800px;
+    max-width: 900px;
     margin: 0 auto;
-    padding: 40px 0;
+    padding: 60px 0;
 }
 
+/* Main Data Trunk */
 .timeline::before {
     content: '';
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    width: 2px;
+    width: 6px;
     height: 100%;
-    background: linear-gradient(to bottom, var(--color-accent-primary), var(--color-accent-secondary));
-    opacity: 0.2;
+    background: var(--color-bg-raised);
+    border-left: 1px solid var(--color-border-strong);
+    border-right: 1px solid var(--color-border-strong);
+    z-index: 0;
 }
 
 .timeline-progress {
@@ -732,7 +781,7 @@ body[data-theme-mode="ai_enhanced"] .profile-picture img {
     transform: translateX(-50%);
     width: 2px;
     background: var(--color-accent-tertiary);
-    box-shadow: 0 0 10px var(--color-accent-tertiary);
+    box-shadow: 0 0 15px 2px var(--color-accent-tertiary), 0 0 30px var(--color-accent-primary);
     top: 0;
     height: 0%;
     z-index: 1;
@@ -740,36 +789,80 @@ body[data-theme-mode="ai_enhanced"] .profile-picture img {
 }
 
 .timeline-item {
-    margin-bottom: 50px;
+    margin-bottom: 70px;
     position: relative;
     width: 45%;
+    z-index: 2;
 }
 
 .timeline-item:nth-child(odd) {
     margin-left: auto;
-    padding-left: 50px;
+    padding-left: 60px;
 }
 
 .timeline-item:nth-child(even) {
-    padding-right: 50px;
+    padding-right: 60px;
 }
 
+/* Horizontal trace connecting trunk to content */
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    top: 24px;
+    width: 60px;
+    height: 2px;
+    background: var(--color-border-strong);
+    z-index: 0;
+    transition: background var(--speed-base) ease, box-shadow var(--speed-base) ease;
+}
+
+.timeline-item.active::before {
+    background: var(--color-accent-tertiary);
+    box-shadow: 0 0 12px var(--color-accent-tertiary);
+}
+
+.timeline-item:nth-child(odd)::before {
+    left: 0;
+}
+
+.timeline-item:nth-child(even)::before {
+    right: 0;
+}
+
+/* Solder Pad Nodes */
 .timeline-dot {
     position: absolute;
     width: 16px;
     height: 16px;
+    background: var(--color-bg-base);
+    border: 2px solid var(--color-accent-primary);
+    border-radius: 2px;
+    top: 18px; /* aligns with horizontal trace center */
+    transition: all var(--speed-base) ease;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.timeline-dot::after {
+    content: '';
+    width: 6px;
+    height: 6px;
     background: var(--color-accent-primary);
     border-radius: 50%;
-    box-shadow: 0 0 16px var(--color-accent-primary);
-    top: 4px;
     transition: all var(--speed-base) ease;
-    z-index: 2;
 }
 
 .timeline-item.active .timeline-dot {
+    border-color: var(--color-accent-tertiary);
+    box-shadow: 0 0 20px var(--color-accent-tertiary);
+    transform: scale(1.2) rotate(45deg);
+}
+
+.timeline-item.active .timeline-dot::after {
     background: var(--color-accent-tertiary);
-    box-shadow: 0 0 25px var(--color-accent-tertiary);
-    transform: scale(1.4);
+    box-shadow: 0 0 10px var(--color-accent-tertiary);
 }
 
 .timeline-item:nth-child(odd) .timeline-dot {
@@ -780,52 +873,85 @@ body[data-theme-mode="ai_enhanced"] .profile-picture img {
     right: -8px;
 }
 
+/* Processor Chip Content Body */
 .timeline-content {
-    background: var(--gradient-surface);
-    padding: 22px;
-    border-radius: var(--radius-md);
+    background: var(--color-bg-raised);
+    padding: 24px;
+    border-radius: 4px;
     border: 1px solid var(--color-border-subtle);
-    box-shadow: var(--shadow-sm);
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.5), var(--shadow-sm);
     transition: all var(--speed-base) ease;
+    position: relative;
+    background-image: radial-gradient(var(--color-border-default) 1px, transparent 1px);
+    background-size: 16px 16px;
 }
 
-.timeline-content:hover {
-    border-color: var(--color-border-default);
-    box-shadow: var(--shadow-md);
-    transform: translateY(-2px);
+/* CPU Pins decoration */
+.timeline-content::after {
+    content: '';
+    position: absolute;
+    top: 10px;
+    bottom: 10px;
+    width: 6px;
+    background: repeating-linear-gradient(
+      to bottom,
+      var(--color-border-strong),
+      var(--color-border-strong) 4px,
+      transparent 4px,
+      transparent 8px
+    );
+}
+
+.timeline-item:nth-child(odd) .timeline-content::after {
+    left: -6px;
+}
+
+.timeline-item:nth-child(even) .timeline-content::after {
+    right: -6px;
+}
+
+.timeline-item.active .timeline-content {
+    border-color: var(--color-accent-tertiary);
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.5), 0 0 20px rgba(125, 207, 255, 0.15);
 }
 
 .timeline-content h3 {
     font-family: var(--font-heading);
-    color: var(--color-accent-primary);
+    color: var(--color-text-heading);
     margin-bottom: 4px;
-    font-size: 1.15em;
+    font-size: 1.25em;
+    font-weight: 700;
 }
 
 .timeline-content h4 {
-    color: var(--color-text-secondary);
+    color: var(--color-accent-primary);
     font-size: 0.9em;
     font-weight: 500;
-    margin-bottom: 10px;
+    margin-bottom: 16px;
 }
 
 .timeline-date {
     color: var(--color-accent-warm);
-    font-size: 0.82em;
+    font-size: 0.8em;
+    font-family: 'Courier New', Courier, monospace; 
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    display: block;
-    margin-bottom: 8px;
+    letter-spacing: 0.08em;
+    display: inline-block;
+    background: rgba(255, 158, 100, 0.1);
+    padding: 6px 10px;
+    border-radius: 2px;
+    margin-bottom: 16px;
+    border: 1px solid rgba(255, 158, 100, 0.2);
 }
 
 .timeline-content p {
     color: var(--color-text-secondary);
-    font-size: 0.93em;
+    font-size: 0.95em;
     line-height: 1.7;
 }
 
-/* ====================================================================
+/* ====================================================================/* ====================================================================
  * SKILLS SECTION
  * ====================================================================*/
 
@@ -1777,149 +1903,6 @@ footer p {
     color: var(--color-text-muted);
     font-size: 0.88em;
 }
-
-/* ====================================================================
- * AI CHAT WIDGET
- * ====================================================================*/
-
-#ai-chat-widget {
-    position: fixed;
-    bottom: 28px;
-    right: 28px;
-    z-index: 1000;
-}
-
-#ai-chat-btn {
-    background: var(--gradient-brand);
-    color: var(--color-text-inverse);
-    width: auto;
-    padding: 0 20px;
-    height: 46px;
-    border-radius: var(--radius-full);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.95em;
-    font-weight: 600;
-    cursor: pointer;
-    box-shadow: var(--shadow-md);
-    transition: transform var(--speed-fast) var(--ease-spring);
-}
-
-#ai-chat-btn:hover {
-    transform: scale(1.05);
-}
-
-#ai-chat-box {
-    position: absolute;
-    bottom: 60px;
-    right: 0;
-    width: 320px;
-    height: 400px;
-    background: var(--color-bg-raised);
-    border: 1px solid var(--color-border-default);
-    border-radius: var(--radius-lg);
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    box-shadow: var(--shadow-lg);
-    transition: opacity var(--speed-base), transform var(--speed-base);
-}
-
-#ai-chat-box.hidden {
-    opacity: 0;
-    pointer-events: none;
-    transform: translateY(16px);
-}
-
-#ai-chat-header {
-    background: var(--gradient-brand);
-    padding: 14px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: var(--color-text-inverse);
-}
-
-#ai-chat-header h3 {
-    margin: 0;
-    font-family: var(--font-heading);
-    font-size: 1rem;
-    font-weight: 600;
-}
-
-#close-chat {
-    cursor: pointer;
-    font-size: 1.4rem;
-}
-
-#ai-chat-messages {
-    flex: 1;
-    padding: 14px;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.msg {
-    padding: 10px 14px;
-    border-radius: 14px;
-    max-width: 82%;
-    font-size: 0.88rem;
-    line-height: 1.4;
-}
-
-.msg.ai {
-    background: var(--color-bg-overlay);
-    color: var(--color-text-secondary);
-    align-self: flex-start;
-    border-bottom-left-radius: 4px;
-}
-
-.msg.user {
-    background: var(--color-accent-primary);
-    color: var(--color-text-inverse);
-    align-self: flex-end;
-    border-bottom-right-radius: 4px;
-}
-
-#ai-chat-input-area {
-    display: flex;
-    padding: 10px;
-    background: var(--color-bg-base);
-    border-top: 1px solid var(--color-border-subtle);
-}
-
-#chat-query {
-    flex: 1;
-    background: transparent;
-    border: none;
-    color: var(--color-text-primary);
-    padding: 8px;
-    outline: none;
-    font-family: var(--font-body);
-    font-size: 0.88em;
-}
-
-#chat-send {
-    background: var(--color-accent-primary);
-    color: var(--color-text-inverse);
-    border: none;
-    border-radius: 50%;
-    width: 34px;
-    height: 34px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background var(--speed-fast) ease;
-}
-
-#chat-send:hover {
-    background: var(--color-accent-tertiary);
-}
-
 /* ====================================================================
  * 3D TILT GLARE
  * ====================================================================*/
@@ -2127,15 +2110,31 @@ footer p {
         left: 20px;
     }
 
+    .timeline-progress {
+        left: 20px;
+        width: 2px;
+    }
+
     .timeline-item {
         width: 100%;
         padding-left: 56px !important;
         padding-right: 0 !important;
     }
 
+    .timeline-item::before {
+        left: 20px !important;
+        width: 36px !important;
+    }
+
     .timeline-item:nth-child(odd) .timeline-dot,
     .timeline-item:nth-child(even) .timeline-dot {
         left: 12px;
+    }
+
+    .timeline-item:nth-child(odd) .timeline-content::after,
+    .timeline-item:nth-child(even) .timeline-content::after {
+        left: 0px !important;
+        right: auto !important;
     }
 
     .projects-grid,
@@ -2202,7 +2201,7 @@ footer p {
     .island-nav,
     .bg-animation,
     #neural-network-canvas,
-    #ai-chat-widget,
+
     .theme-toggle-wrapper,
     .ai-mode-toggle {
         display: none !important;

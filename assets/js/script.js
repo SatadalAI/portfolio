@@ -684,6 +684,12 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         aiToggle.addEventListener('change', function () {
+            // Trigger glitch transition
+            document.body.classList.remove('glitch-active');
+            void document.body.offsetWidth; // force reflow
+            document.body.classList.add('glitch-active');
+            setTimeout(() => { document.body.classList.remove('glitch-active'); }, 400);
+
             if (this.checked) {
                 document.body.setAttribute('data-theme-mode', 'ai_enhanced');
                 localStorage.setItem('ai_mode', 'ai_enhanced');
@@ -761,13 +767,6 @@ document.addEventListener('DOMContentLoaded', function () {
             closeModal();
         }
     });
-
-    // ── Global AI Widget ──
-    injectAIWidget();
-
-    // ── Chat Widget ──
-    initChatWidget();
-
     // ── UX Enhance: Magnetic Buttons ──
     initMagneticButtons();
 
@@ -775,30 +774,6 @@ document.addEventListener('DOMContentLoaded', function () {
     initScrollSyncedPath();
 });
 
-function injectAIWidget() {
-    if (document.getElementById('ai-chat-widget')) return;
-
-    const widgetHTML = `
-    <div id="ai-chat-widget" class="ai-exclusive">
-        <div id="ai-chat-btn">
-            🤖 Ask AI
-        </div>
-        <div id="ai-chat-box" class="hidden">
-            <div id="ai-chat-header">
-                <h3>Satadal.AI Assistant</h3>
-                <span id="close-chat">&times;</span>
-            </div>
-            <div id="ai-chat-messages">
-                <div class="msg ai">Hi! I'm Satadal's AI clone. Ask me about his resume or leave a message.</div>
-            </div>
-            <div id="ai-chat-input-area">
-                <input type="text" id="chat-query" placeholder="Ask about Python, ComfyUI, etc...">
-                <button id="chat-send">▶</button>
-            </div>
-        </div>
-    </div>`;
-    document.body.insertAdjacentHTML('beforeend', widgetHTML);
-}
 
 function initMagneticButtons() {
     const magnets = document.querySelectorAll('.btn, .social-icon, .read-more');
@@ -859,82 +834,3 @@ function initScrollSyncedPath() {
     });
 }
 
-function initChatWidget() {
-    const btn = document.getElementById('ai-chat-btn');
-    const box = document.getElementById('ai-chat-box');
-    const closeBtn = document.getElementById('close-chat');
-    const sendBtn = document.getElementById('chat-send');
-    const queryInput = document.getElementById('chat-query');
-    const msgContainer = document.getElementById('ai-chat-messages');
-
-    if (!btn || !box) return;
-
-    btn.addEventListener('click', () => {
-        box.classList.toggle('hidden');
-    });
-
-    if (closeBtn) {
-        closeBtn.addEventListener('click', () => {
-            box.classList.add('hidden');
-        });
-    }
-
-    function addMessage(text, type) {
-        const div = document.createElement('div');
-        div.className = `msg ${type}`;
-        div.textContent = text;
-        msgContainer.appendChild(div);
-        msgContainer.scrollTop = msgContainer.scrollHeight;
-    }
-
-    async function handleQuery() {
-        const txt = queryInput.value.trim();
-        if (!txt) return;
-        addMessage(txt, 'user');
-        queryInput.value = '';
-
-        const lowerTxt = txt.toLowerCase();
-        let response = '';
-
-        if (lowerTxt.includes('hello') || lowerTxt.includes('hi')) {
-            response = "Hello there! How can I help you regarding Satadal's portfolio?";
-        } else if (lowerTxt.includes('resume') || lowerTxt.includes('experience') || lowerTxt.includes('skills')) {
-            response = 'Satadal is an Automation Architect and Software Developer. He specializes in Agentic AI, Python, Java, and Jenkins. You can download his full resume from the Contact page.';
-        } else if (lowerTxt.includes('comfyui') || lowerTxt.includes('projects')) {
-            response = 'You should definitely check out the SATA_UtilityNode project on the Projects page. It is a ComfyUI custom node suite built using Python.';
-        } else {
-            response = 'I am a basic AI fallback script. Since that inquiry was too complex, I will forward your message directly to Satadal via EmailJS...';
-            addMessage(response, 'ai');
-
-            setTimeout(async () => {
-                if (window.emailjs) {
-                    try {
-                        await emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', {
-                            from_name: 'Visitor via AI Chat',
-                            from_email: 'anonymous@visitor.com',
-                            subject: 'AI Chat Inquiry',
-                            message: txt
-                        });
-                        addMessage('Success! The message was forwarded.', 'ai');
-                    } catch (e) {
-                        addMessage('EmailJS sending failed. Please use the Contact page instead.', 'ai');
-                    }
-                } else {
-                    addMessage('EmailJS is not initialized. Please visit the Contact page.', 'ai');
-                }
-            }, 1000);
-            return;
-        }
-
-        setTimeout(() => {
-            addMessage(response, 'ai');
-        }, 500);
-    }
-
-    if (sendBtn) sendBtn.addEventListener('click', handleQuery);
-    if (queryInput) {
-        queryInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') handleQuery();
-        });
-    }
-}
