@@ -16,20 +16,17 @@
     <meta property="og:url" content="https://satadaldhara.github.io/projects.html">
     <meta property="og:type" content="website">
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+    <script defer src="https://cloud.umami.is/script.js" data-website-id="YOUR-WEBSITE-ID"></script>
 </head>
 
 <body>
     <script>document.body.classList.add('fade-in');</script>
     <div class="bg-animation"></div>
     <canvas id="neural-network-canvas"></canvas>
-    <!-- Particles -->
-    <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
-    <div class="particle" style="left: 20%; animation-delay: 2s;"></div>
-    <div class="particle" style="left: 40%; animation-delay: 1s;"></div>
-    <div class="particle" style="left: 50%; animation-delay: 3s;"></div>
-    <div class="particle" style="left: 80%; animation-delay: 4.5s;"></div>
-    <div class="particle" style="left: 90%; animation-delay: 1.5s;"></div>
 
     <!-- Island Navigation -->
     <nav class="island-nav">
@@ -37,18 +34,19 @@
             <ul class="nav-links">
                 <li><a href="index.html" id="nav-home">Home</a></li>
                 <li><a href="projects.html" id="nav-projects" class="active">Projects</a></li>
-                <li><a href="gallery.html" id="nav-gallery">Gallery</a></li>
                 <li><a href="blog.html" id="nav-blog">Blog</a></li>
                 <li><a href="contact.html" id="nav-contact">Contact</a></li>
             </ul>
             <div class="theme-toggle-wrapper">
-                <label class="theme-switch" for="checkbox">
-                    <input type="checkbox" id="checkbox" />
-                    <div class="slider round">
-                        <span class="icon-engineer">⚙️</span>
-                        <span class="icon-artist">🎨</span>
-                    </div>
-                </label>
+                <div class="ai-mode-toggle">
+                    <label class="theme-switch" for="ai-checkbox">
+                        <input type="checkbox" id="ai-checkbox" />
+                        <div class="slider round">
+                            <span class="icon-professional">👨‍💼</span>
+                            <span class="icon-ai">🤖</span>
+                        </div>
+                    </label>
+                </div>
             </div>
         </div>
     </nav>
@@ -60,11 +58,10 @@
             <p class="page-subtitle">Showcase of my technical work</p>
 
             <div class="projects-grid">
-                <div class="project-card">
+                <div class="project-card ai-exclusive">
                     <div class="project-image">
                         <img src="assets/img/thumbnails/sata_utility_node.png"
-                            alt="SATA_UtilityNode - ComfyUI Custom Nodes" loading="lazy"
-                            style="width: 100%; height: 100%; object-fit: cover;">
+                            alt="SATA_UtilityNode - ComfyUI Custom Nodes" loading="lazy">
                     </div>
                     <div class="project-content">
                         <h3>SATA_UtilityNode</h3>
@@ -87,7 +84,7 @@
                 <div class="project-card">
                     <div class="project-image">
                         <img src="assets/img/thumbnails/pendulum_game.png" alt="Pendulum - Physics Puzzle Game"
-                            loading="lazy" style="width: 100%; height: 100%; object-fit: cover;">
+                            loading="lazy">
                     </div>
                     <div class="project-content">
                         <h3>Pendulum</h3>
@@ -105,6 +102,26 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="project-card ai-exclusive" id="gallery-project-card">
+                    <div class="project-image">
+                        <img src="assets/img/thumbnails/album_placeholder.png" alt="Digital Artworks Gallery"
+                            loading="lazy">
+                    </div>
+                    <div class="project-content">
+                        <h3>Digital Artworks</h3>
+                        <p>A collection of my creative digital artworks, AI-generated concepts, and aesthetic experiments that blend technology with imagination.</p>
+                        <div class="project-tags">
+                            <span class="tag">AI Art</span>
+                            <span class="tag">Stable Diffusion</span>
+                            <span class="tag">ComfyUI</span>
+                            <span class="tag">Digital Art</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="gallery.html" class="project-link">View Gallery</a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -119,7 +136,7 @@
         <img class="modal-content" id="modalImage">
     </div>
 
-    <script src="assets/js/script.js"></script>
+    <script defer src="assets/js/script.js"></script>
 </body>
 
 </html>

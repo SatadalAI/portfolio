@@ -1,112 +1,109 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Python for Automation - Satadal Dhara</title>
-    <link rel="stylesheet" href="../style.css">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Python for Automation - Satadal Dhara</title>
+<meta name="description" content="Advanced techniques for structuring Python automation projects with proper error handling and logging.">
+
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+<script defer src="https://cloud.umami.is/script.js" data-website-id="YOUR-WEBSITE-ID"></script>
 </head>
-
 <body>
-    <script>document.body.classList.add('fade-in');</script>
-    <div class="bg-animation"></div>
-    <!-- Particles -->
-    <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
-    <div class="particle" style="left: 20%; animation-delay: 2s;"></div>
-    <div class="particle" style="left: 40%; animation-delay: 1s;"></div>
-    <div class="particle" style="left: 50%; animation-delay: 3s;"></div>
-    <div class="particle" style="left: 80%; animation-delay: 4.5s;"></div>
-    <div class="particle" style="left: 90%; animation-delay: 1.5s;"></div>
+<script>document.body.classList.add('fade-in');</script>
+<div class="bg-animation"></div>
+<canvas id="neural-network-canvas"></canvas>
 
-    <nav>
-        <ul>
+<nav class="island-nav">
+    <div class="nav-container">
+        <ul class="nav-links">
             <li><a href="../index.html" id="nav-home">Home</a></li>
             <li><a href="../projects.html" id="nav-projects">Projects</a></li>
-            <li><a href="../blog.html" id="nav-blog">Blog</a></li>
-            <li><a href="../gallery.html" id="nav-gallery">Gallery</a></li>
+            <li><a href="../blog.html" id="nav-blog" class="active">Blog</a></li>
             <li><a href="../contact.html" id="nav-contact">Contact</a></li>
         </ul>
-    </nav>
-
-    <!-- Page content preserved from SPA -->
-    <div id="blog-post" class="page">
-        <div class="page-container">
-            <div class="container">
-                <article class="blog-article">
-                    <header>
-                        <h1 class="page-title">Python for Automation: Beyond the Basics</h1>
-                        <p class="article-meta">Published on November 20, 2025 by Satadal Dhara</p>
-                    </header>
-
-                    <section>
-                        <p>Python is often celebrated as the "glue" language of the internet. For automation engineers,
-                            it's the Swiss Army knife. But writing a quick script to automate a task is very different
-                            from engineering a robust automation solution that runs in a production enterprise
-                            environment.</p>
-
-                        <h2>Moving From Scripts to Engineering</h2>
-                        <p>When I first started, my automation "projects" were single <code>.py</code> files with 500
-                            lines of code, global variables everywhere, and zero error handling. It worked... until it
-                            didn't. As I moved into more complex roles, I realized that automation code needs to be
-                            treated with the same rigor as application code.</p>
-
-                        <h2>1. Structure Matters</h2>
-                        <p>Even for a medium-sized automation tool, separation of concerns is vital. I typically
-                            structure my projects like this:</p>
-                        <ul>
-                            <li><code>/src</code>: The core logic.</li>
-                            <li><code>/config</code>: YAML or JSON files for configuration (never hardcode
-                                credentials!).</li>
-                            <li><code>/logs</code>: Where the execution history lives.</li>
-                            <li><code>/tests</code>: Yes, automation scripts need unit tests too.</li>
-                        </ul>
-
-                        <h2>2. Robust Error Handling</h2>
-                        <p>In automation, the "Happy Path" is a myth. Networks fail, APIs timeout, and files get locked.
-                            A simple <code>try-except</code> block isn't enough. You need to anticipate specific
-                            failures.</p>
-                        <p>Instead of a generic <code>except Exception:</code>, catch specific errors like
-                            <code>requests.exceptions.Timeout</code> or <code>FileNotFoundError</code>. This allows your
-                            script to make intelligent decisions—should it retry? Should it alert an admin? Should it
-                            fail silently and log the issue?</p>
-
-                        <h2>3. Logging vs. Printing</h2>
-                        <p>The <code>print()</code> statement is great for debugging, but terrible for production. When
-                            an automation job fails at 3 AM, you need a forensic trail.</p>
-                        <blockquote>
-                            "If it isn't logged, it didn't happen."
-                        </blockquote>
-                        <p>Using Python's built-in <code>logging</code> module allows you to set severity levels (INFO,
-                            WARNING, ERROR). You can stream logs to the console for real-time monitoring while
-                            simultaneously writing them to a rotating file handler for archival. This context is
-                            invaluable when performing Root Cause Analysis (RCA).</p>
-
-                        <h2>Conclusion</h2>
-                        <p>Elevating your Python skills from "scripting" to "software engineering" is a journey. It
-                            requires discipline and a shift in mindset. But the result is automation that is resilient,
-                            maintainable, and scalable—assets that any engineering team will value highly.</p>
-
-                        <a href="../blog.html" class="back-link">← Back to All Articles</a>
-                    </section>
-                </article>
-            </div>
+        <div class="theme-toggle-wrapper">
         </div>
     </div>
+</nav>
 
-    <footer>
-        <p>&copy; 2025 Satadal Dhara. Crafted with passion and code.</p>
-    </footer>
+<div id="blog-post" class="page">
+    <div class="page-container">
+        <div class="container">
+            <article class="blog-article">
+                <header>
+                    <h1 class="page-title">Python for Automation: Beyond the Basics</h1>
+                    <p class="article-meta">Published on November 20, 2025 by Satadal Dhara</p>
+                </header>
 
+                <section>
+                    <p>Python is often celebrated as the "glue" language of the internet. For automation engineers,
+                        it's the Swiss Army knife. But writing a quick script to automate a task is very different
+                        from engineering a robust automation solution that runs in a production enterprise
+                        environment.</p>
 
-    <!-- Modal for Image Viewing -->
-    <div id="imageModal" class="modal">
-        <span class="close" onclick="closeModal()">&times;</span>
-        <img class="modal-content" id="modalImage">
+                    <h2>Moving From Scripts to Engineering</h2>
+                    <p>When I first started, my automation "projects" were single <code>.py</code> files with 500
+                        lines of code, global variables everywhere, and zero error handling. It worked... until it
+                        didn't. As I moved into more complex roles, I realized that automation code needs to be
+                        treated with the same rigor as application code.</p>
+
+                    <h2>1. Structure Matters</h2>
+                    <p>Even for a medium-sized automation tool, separation of concerns is vital. I typically
+                        structure my projects like this:</p>
+                    <ul>
+                        <li><code>/src</code>: The core logic.</li>
+                        <li><code>/config</code>: YAML or JSON files for configuration (never hardcode
+                            credentials!).</li>
+                        <li><code>/logs</code>: Where the execution history lives.</li>
+                        <li><code>/tests</code>: Yes, automation scripts need unit tests too.</li>
+                    </ul>
+
+                    <h2>2. Robust Error Handling</h2>
+                    <p>In automation, the "Happy Path" is a myth. Networks fail, APIs timeout, and files get locked.
+                        A simple <code>try-except</code> block isn't enough. You need to anticipate specific
+                        failures.</p>
+                    <p>Instead of a generic <code>except Exception:</code>, catch specific errors like
+                        <code>requests.exceptions.Timeout</code> or <code>FileNotFoundError</code>. This allows your
+                        script to make intelligent decisions—should it retry? Should it alert an admin? Should it
+                        fail silently and log the issue?</p>
+
+                    <h2>3. Logging vs. Printing</h2>
+                    <p>The <code>print()</code> statement is great for debugging, but terrible for production. When
+                        an automation job fails at 3 AM, you need a forensic trail.</p>
+                    <blockquote>
+                        "If it isn't logged, it didn't happen."
+                    </blockquote>
+                    <p>Using Python's built-in <code>logging</code> module allows you to set severity levels (INFO,
+                        WARNING, ERROR). You can stream logs to the console for real-time monitoring while
+                        simultaneously writing them to a rotating file handler for archival. This context is
+                        invaluable when performing Root Cause Analysis (RCA).</p>
+
+                    <h2>Conclusion</h2>
+                    <p>Elevating your Python skills from "scripting" to "software engineering" is a journey. It
+                        requires discipline and a shift in mindset. But the result is automation that is resilient,
+                        maintainable, and scalable—assets that any engineering team will value highly.</p>
+
+                    <a href="../blog.html" class="back-link">← Back to All Articles</a>
+                </section>
+            </article>
+        </div>
     </div>
+</div>
 
+<footer>
+    <p>&copy; 2025 Satadal Dhara. Crafted with passion and code.</p>
+</footer>
 
-    <script src="../script.js"></script>
+<div id="imageModal" class="modal">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <img class="modal-content" id="modalImage">
+</div>
+
+<script defer src="../assets/js/script.js"></script>
 </body>
-
 </html>

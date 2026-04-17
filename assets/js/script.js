@@ -1,19 +1,23 @@
 /*
  * ===================================================================
- *  SITE-WIDE DATA SOURCE
+ *  PORTFOLIO — MAIN SCRIPT
+ *  Handles: Theme system, Neural network, Gallery, Blog, Analytics,
+ *           Tilt effects, Chat widget, Page transitions, Umami stats
  * ===================================================================
  */
 
-/*
- * ===================================================================
+/* ===================================================================
+ *  THEME SYSTEM
+ *  Kept professional dark theme as default.
+ * =================================================================== */
+
+
+/* ===================================================================
  *  PAGE TRANSITIONS
- * ===================================================================
- */
+ * =================================================================== */
 
-// Handle smooth page transitions
 function initPageTransitions() {
     document.querySelectorAll('a').forEach(link => {
-        // Only handle internal links
         if (link.hostname === window.location.hostname &&
             !link.href.includes('#') &&
             !link.hasAttribute('download') &&
@@ -34,13 +38,10 @@ function initPageTransitions() {
     });
 }
 
-/*
- * ===================================================================
- *  APPLICATION LOGIC
- * ===================================================================
- */
+/* ===================================================================
+ *  NEURAL NETWORK BACKGROUND
+ * =================================================================== */
 
-// Neural Network Background Animation
 function initNeuralNetwork() {
     const canvas = document.getElementById('neural-network-canvas');
     if (!canvas) return;
@@ -49,63 +50,92 @@ function initNeuralNetwork() {
     let width = canvas.width = window.innerWidth;
     let height = canvas.height = window.innerHeight;
 
-    // Hide CSS particles since we have canvas now
-    const particles = document.querySelectorAll('.particle');
-    particles.forEach(p => p.style.display = 'none');
+    let mouse = { x: null, y: null };
+    window.addEventListener('mousemove', (e) => {
+        mouse.x = e.x;
+        mouse.y = e.y;
+    });
 
-    // Neural nodes
     const nodes = [];
-    const numNodes = Math.min(60, Math.floor((width * height) / 25000)); // Responsive node count
-    const connectionDistance = 180;
+    const numNodes = Math.min(50, Math.floor((width * height) / 30000));
+    const connectionDistance = 160;
 
     class Node {
         constructor() {
             this.x = Math.random() * width;
             this.y = Math.random() * height;
-            this.vx = (Math.random() - 0.5) * 0.5;
-            this.vy = (Math.random() - 0.5) * 0.5;
-            this.radius = Math.random() * 2 + 1;
+            this.vx = (Math.random() - 0.5) * 0.4;
+            this.vy = (Math.random() - 0.5) * 0.4;
+            this.radius = Math.random() * 2 + 0.8;
             this.pulsePhase = Math.random() * Math.PI * 2;
         }
 
         update() {
+            // Mouse attraction in AI mode
+            if (document.body.getAttribute('data-theme-mode') === 'ai_enhanced' && mouse.x !== null) {
+                const dx = mouse.x - this.x;
+                const dy = mouse.y - this.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < 250) {
+                    this.vx += (dx / dist) * 0.06;
+                    this.vy += (dy / dist) * 0.06;
+                }
+            }
+
+            const speed = Math.sqrt(this.vx * this.vx + this.vy * this.vy);
+            const maxSpeed = document.body.getAttribute('data-theme-mode') === 'ai_enhanced' ? 2 : 0.6;
+            if (speed > maxSpeed) {
+                this.vx = (this.vx / speed) * maxSpeed;
+                this.vy = (this.vy / speed) * maxSpeed;
+            }
+
             this.x += this.vx;
             this.y += this.vy;
-            this.pulsePhase += 0.02;
+            this.pulsePhase += 0.015;
 
-            // Bounce off edges
             if (this.x < 0 || this.x > width) this.vx *= -1;
             if (this.y < 0 || this.y > height) this.vy *= -1;
-
-            // Keep in bounds
             this.x = Math.max(0, Math.min(width, this.x));
             this.y = Math.max(0, Math.min(height, this.y));
         }
 
         draw() {
             const pulse = Math.sin(this.pulsePhase) * 0.3 + 0.7;
+            // Read CSS custom property colors
+            const nodeColor = getComputedStyle(document.documentElement)
+                .getPropertyValue('--nn-node-color').trim() || 'rgba(122, 162, 247, 0.5)';
+            const glowColor = getComputedStyle(document.documentElement)
+                .getPropertyValue('--nn-glow-color').trim() || 'rgba(125, 207, 255, 0.25)';
+
             ctx.beginPath();
             ctx.arc(this.x, this.y, this.radius * pulse, 0, Math.PI * 2);
-            // Lavender core
-            ctx.fillStyle = `rgba(167, 139, 250, ${0.6 * pulse})`;
+            ctx.fillStyle = nodeColor;
             ctx.fill();
 
-            // Glow effect
             ctx.beginPath();
             ctx.arc(this.x, this.y, this.radius * 3, 0, Math.PI * 2);
             const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.radius * 3);
-            // Sky blue glow
-            gradient.addColorStop(0, `rgba(56, 189, 248, ${0.3 * pulse})`);
+            gradient.addColorStop(0, glowColor);
             gradient.addColorStop(1, 'transparent');
             ctx.fillStyle = gradient;
             ctx.fill();
         }
     }
 
-    // Create nodes
     for (let i = 0; i < numNodes; i++) {
         nodes.push(new Node());
     }
+
+    // Cache line color to avoid per-frame getComputedStyle overhead
+    let lineColor = 'rgba(187, 154, 247, 0.3)';
+    function updateLineColor() {
+        lineColor = getComputedStyle(document.documentElement)
+            .getPropertyValue('--nn-line-color').trim() || lineColor;
+    }
+    updateLineColor();
+    // Re-read on theme changes
+    const observer = new MutationObserver(updateLineColor);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
 
     function drawConnections() {
         for (let i = 0; i < nodes.length; i++) {
@@ -115,12 +145,11 @@ function initNeuralNetwork() {
                 const dist = Math.sqrt(dx * dx + dy * dy);
 
                 if (dist < connectionDistance) {
-                    const opacity = (1 - dist / connectionDistance) * 0.4;
+                    const opacity = (1 - dist / connectionDistance) * 0.35;
                     ctx.beginPath();
                     ctx.moveTo(nodes[i].x, nodes[i].y);
                     ctx.lineTo(nodes[j].x, nodes[j].y);
-                    // Indigo connection lines
-                    ctx.strokeStyle = `rgba(129, 140, 248, ${opacity})`;
+                    ctx.strokeStyle = lineColor.replace(/[\d.]+\)$/, `${opacity})`);
                     ctx.lineWidth = 0.5;
                     ctx.stroke();
                 }
@@ -130,17 +159,14 @@ function initNeuralNetwork() {
 
     function animate() {
         ctx.clearRect(0, 0, width, height);
-
         drawConnections();
         nodes.forEach(node => {
             node.update();
             node.draw();
         });
-
         requestAnimationFrame(animate);
     }
 
-    // Handle resize
     window.addEventListener('resize', () => {
         width = canvas.width = window.innerWidth;
         height = canvas.height = window.innerHeight;
@@ -149,7 +175,10 @@ function initNeuralNetwork() {
     animate();
 }
 
-// Modal Functions
+/* ===================================================================
+ *  MODAL
+ * =================================================================== */
+
 function openModal(imgSrc) {
     const modal = document.getElementById('imageModal');
     const modalImg = document.getElementById('modalImage');
@@ -163,48 +192,33 @@ function closeModal() {
     if (modal) modal.style.display = 'none';
 }
 
-window.onclick = function (event) {
-    const modal = document.getElementById('imageModal');
-    if (event.target == modal) {
-        closeModal();
-    }
-};
+/* ===================================================================
+ *  SCROLL-TRIGGERED ANIMATIONS
+ * =================================================================== */
 
-// Custom smooth scroll function
-function customSmoothScroll(targetId, duration) {
-    const targetElement = document.getElementById(targetId);
-    if (!targetElement) return;
+function initScrollAnimations() {
+    const animatedElements = document.querySelectorAll(
+        '.project-card, .blog-card, .stat-card, .skill-category, .album-card'
+    );
 
-    const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset;
-    const startPosition = window.pageYOffset;
-    const distance = targetPosition - startPosition;
+    if (animatedElements.length === 0) return;
 
-    if (distance === 0) return;
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
 
-    let startTime = null;
-    const easeInOutQuad = (t, b, c, d) => {
-        t /= d / 2;
-        if (t < 1) return c / 2 * t * t + b;
-        t--;
-        return -c / 2 * (t * (t - 2) - 1) + b;
-    };
-
-    function animation(currentTime) {
-        if (startTime === null) startTime = currentTime;
-        const timeElapsed = currentTime - startTime;
-        window.scrollTo(0, easeInOutQuad(timeElapsed, startPosition, distance, duration));
-        if (timeElapsed < duration) requestAnimationFrame(animation);
-    }
-
-    requestAnimationFrame(animation);
+    animatedElements.forEach(el => observer.observe(el));
 }
 
-// --------------------------
-// JSON-driven gallery loader
-// --------------------------
-// --------------------------
-// JSON-driven gallery loader (Albums Support)
-// --------------------------
+/* ===================================================================
+ *  GALLERY (JSON-driven with Albums)
+ * =================================================================== */
+
 let allAlbums = [];
 
 async function updateGalleryFromApi() {
@@ -214,14 +228,12 @@ async function updateGalleryFromApi() {
     const backBtn = document.getElementById('back-to-albums');
     const albumTitle = document.getElementById('current-album-title');
 
-    if (!albumsGrid) return; // Not on gallery page
+    if (!albumsGrid) return;
 
-    // Back button logic
     if (backBtn) {
         backBtn.onclick = () => {
             albumView.style.display = 'none';
             albumsGrid.style.display = 'grid';
-            // Fade effect
             albumsGrid.style.opacity = '0';
             requestAnimationFrame(() => {
                 albumsGrid.style.transition = 'opacity 0.5s ease';
@@ -235,15 +247,12 @@ async function updateGalleryFromApi() {
         if (!resp.ok) throw new Error('images.json not found');
         allAlbums = await resp.json();
 
-        // Handle legacy format (if it was just an array of strings, though we updated it)
         if (Array.isArray(allAlbums) && typeof allAlbums[0] === 'string') {
-            console.warn('Legacy gallery format detected. Please update images.json.');
-            renderLegacyGallery(allAlbums, galleryItems);
+            console.warn('Legacy gallery format detected.');
             return;
         }
 
         renderAlbums(allAlbums, albumsGrid);
-
     } catch (err) {
         console.warn('Could not load gallery:', err.message);
     }
@@ -253,8 +262,6 @@ async function updateGalleryFromApi() {
         albums.forEach(album => {
             const card = document.createElement('div');
             card.className = 'album-card';
-
-            // Image count badge
             const count = album.images ? album.images.length : 0;
 
             card.innerHTML = `
@@ -274,10 +281,12 @@ async function updateGalleryFromApi() {
             card.onclick = () => openAlbum(album);
             container.appendChild(card);
         });
+
+        // Trigger scroll animations for dynamically added cards
+        initScrollAnimations();
     }
 
     function openAlbum(album) {
-        // Switch views
         albumsGrid.style.display = 'none';
         albumView.style.display = 'block';
         albumView.style.opacity = '0';
@@ -287,10 +296,8 @@ async function updateGalleryFromApi() {
             albumView.style.opacity = '1';
         });
 
-        // Set title
         if (albumTitle) albumTitle.textContent = album.title;
 
-        // Render images
         galleryItems.innerHTML = '';
         if (!album.images || album.images.length === 0) {
             galleryItems.innerHTML = '<p class="empty-msg">No images in this album yet.</p>';
@@ -306,18 +313,21 @@ async function updateGalleryFromApi() {
         normalized.forEach((imgSrc, index) => {
             const item = document.createElement('div');
             item.className = 'gallery-item';
-            // Stagger animation
-            item.style.animationDelay = `${index * 0.1}s`;
+            item.style.transitionDelay = `${index * 0.08}s`;
             item.onclick = () => openModal(imgSrc);
             item.innerHTML = `<img src="${imgSrc}" alt="${album.title} ${index + 1}" loading="lazy">`;
             galleryItems.appendChild(item);
         });
+
+        // Trigger scroll animations for gallery items
+        initScrollAnimations();
     }
 }
 
-// --------------------------
-// JSON-driven blog loader
-// --------------------------
+/* ===================================================================
+ *  BLOG (JSON-driven)
+ * =================================================================== */
+
 async function populateBlogGrid() {
     const blogGrid = document.querySelector('.blog-grid');
     if (!blogGrid) return;
@@ -329,7 +339,6 @@ async function populateBlogGrid() {
         const posts = await resp.json();
         if (!Array.isArray(posts)) throw new Error('blogs.json is not an array');
 
-        // Each entry can be a string (url) or object { url, title, excerpt }
         posts.forEach((entry) => {
             const post = (typeof entry === 'string') ? { url: entry, title: '', excerpt: '' } : { ...entry };
             post.title = post.title || '';
@@ -337,36 +346,47 @@ async function populateBlogGrid() {
 
             const card = document.createElement('div');
             card.className = 'blog-card';
+            if (post.mode === 'ai') {
+                card.classList.add('ai-exclusive');
+            }
             card.dataset.postUrl = post.url;
-            // Use image if available, else fallback emoji
+
             const imgContent = post.image
                 ? `<img src="${post.image}" alt="${post.title}" loading="lazy" style="width: 100%; height: 100%; object-fit: cover;">
                    <div class="icon">📝</div>`
                 : `<div class="icon">📝</div>`;
 
             card.innerHTML = `
-                        <div class="blog-image">
-                            ${imgContent}
-                        </div>
-                        <div class="blog-content">
-                            <div class="blog-meta">Technlogy</div>
-                            <h3 class="post-title">${post.title || 'Untitled'}</h3>
-                            <p class="post-summary">${post.excerpt}</p>
-                            <a href="${post.url}" class="read-more">Read Article</a>
-                        </div>
-                    `;
+                <div class="blog-image">
+                    ${imgContent}
+                </div>
+                <div class="blog-content">
+                    <div class="blog-meta">Technology</div>
+                    <h3 class="post-title">${post.title || 'Untitled'}</h3>
+                    <p class="post-summary">${post.excerpt}</p>
+                    <a href="${post.url}" class="read-more">Read Article</a>
+                </div>
+            `;
+
             card.addEventListener('click', function () {
                 const link = card.querySelector('.read-more');
                 if (link && link.href) window.location.href = link.href;
             });
+
             blogGrid.appendChild(card);
         });
+
+        // Trigger scroll animations
+        initScrollAnimations();
     } catch (err) {
         console.warn('Could not load blogs.json:', err.message);
     }
 }
 
-// Analytics & other behaviors
+/* ===================================================================
+ *  ANALYTICS COUNTERS
+ * =================================================================== */
+
 let analyticsAnimated = false;
 
 function animateCounter(id, start, end, duration) {
@@ -385,93 +405,232 @@ function animateCounter(id, start, end, duration) {
         } else {
             element.textContent = current + '+';
         }
-
         if (current === end) clearInterval(timer);
     }, stepTime);
 }
 
-// Calculate years of experience from December 7, 2020
 function calculateExperience() {
     const startDate = new Date('2020-12-07');
     const currentDate = new Date();
     const diffTime = Math.abs(currentDate - startDate);
-    const diffYears = diffTime / (1000 * 60 * 60 * 24 * 365.25);
-    return Math.floor(diffYears);
+    return Math.floor(diffTime / (1000 * 60 * 60 * 24 * 365.25));
 }
 
-// Get or initialize visitor count
-function getVisitorCount() {
-    // Check if this is a new visitor
-    const hasVisited = localStorage.getItem('portfolio_visited');
-    let totalVisitors = parseInt(localStorage.getItem('portfolio_visitor_count') || '0');
+/* ===================================================================
+ *  UMAMI ANALYTICS INTEGRATION
+ * =================================================================== */
 
-    if (!hasVisited) {
-        // New visitor
-        totalVisitors++;
-        localStorage.setItem('portfolio_visitor_count', totalVisitors.toString());
-        localStorage.setItem('portfolio_visited', 'true');
+// Fetch real visitor stats from Umami API
+async function fetchUmamiStats() {
+    // Configuration — replace these with your Umami instance details
+    const UMAMI_API_URL = ''; // e.g., 'https://cloud.umami.is'
+    const UMAMI_WEBSITE_ID = ''; // your website ID from Umami dashboard
+    const UMAMI_API_TOKEN = ''; // read-only API token
+
+    // If not configured, return fallback values
+    if (!UMAMI_API_URL || !UMAMI_WEBSITE_ID || !UMAMI_API_TOKEN) {
+        return {
+            visitors: 0,
+            pageviews: 0,
+            configured: false
+        };
     }
 
-    return totalVisitors;
-}
-
-// Count projects dynamically
-async function countProjects() {
-    // Try to count from projects.html via fetch
     try {
-        const response = await fetch('projects.html');
-        const html = await response.text();
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(html, 'text/html');
-        const projectCards = doc.querySelectorAll('.project-card');
-        return projectCards.length || 15; // Fallback to 15 if can't count
-    } catch (error) {
-        console.warn('Could not count projects:', error);
-        return 15; // Fallback value
+        const now = Date.now();
+        const thirtyDaysAgo = now - (30 * 24 * 60 * 60 * 1000);
+
+        const response = await fetch(
+            `${UMAMI_API_URL}/api/websites/${UMAMI_WEBSITE_ID}/stats?startAt=${thirtyDaysAgo}&endAt=${now}`,
+            {
+                headers: {
+                    'Authorization': `Bearer ${UMAMI_API_TOKEN}`,
+                    'Accept': 'application/json'
+                }
+            }
+        );
+
+        if (!response.ok) throw new Error(`Umami API returned ${response.status}`);
+        const data = await response.json();
+
+        return {
+            visitors: data.visitors?.value || data.uniques?.value || 0,
+            pageviews: data.pageviews?.value || 0,
+            configured: true
+        };
+    } catch (err) {
+        console.warn('Umami API fetch failed:', err.message);
+        return { visitors: 0, pageviews: 0, configured: false };
     }
 }
 
-// Count artworks from gallery
-async function countArtworks() {
-    try {
-        const resp = await fetch('assets/data/images.json');
-        if (!resp.ok) throw new Error('images.json not found');
-        const data = await resp.json();
-        if (Array.isArray(data)) {
-            // Check if it's the new album format (objects) or legacy (strings)
-            if (typeof data[0] === 'string') return data.length;
-            // Sum all images in albums
-            return data.reduce((acc, album) => acc + (album.images ? album.images.length : 0), 0);
-        }
-        return 50;
-    } catch (error) {
-        console.warn('Could not count artworks:', error);
-        return 50; // Fallback value
+// Fetch detailed metrics for the analytics dashboard page
+async function fetchUmamiMetrics() {
+    const UMAMI_API_URL = '';
+    const UMAMI_WEBSITE_ID = '';
+    const UMAMI_API_TOKEN = '';
+
+    if (!UMAMI_API_URL || !UMAMI_WEBSITE_ID || !UMAMI_API_TOKEN) {
+        return null;
     }
+
+    try {
+        const now = Date.now();
+        const thirtyDaysAgo = now - (30 * 24 * 60 * 60 * 1000);
+        const params = `startAt=${thirtyDaysAgo}&endAt=${now}`;
+        const headers = {
+            'Authorization': `Bearer ${UMAMI_API_TOKEN}`,
+            'Accept': 'application/json'
+        };
+
+        const [statsRes, pagesRes, referrersRes, browsersRes] = await Promise.all([
+            fetch(`${UMAMI_API_URL}/api/websites/${UMAMI_WEBSITE_ID}/stats?${params}`, { headers }),
+            fetch(`${UMAMI_API_URL}/api/websites/${UMAMI_WEBSITE_ID}/metrics?${params}&type=url`, { headers }),
+            fetch(`${UMAMI_API_URL}/api/websites/${UMAMI_WEBSITE_ID}/metrics?${params}&type=referrer`, { headers }),
+            fetch(`${UMAMI_API_URL}/api/websites/${UMAMI_WEBSITE_ID}/metrics?${params}&type=browser`, { headers })
+        ]);
+
+        const stats = await statsRes.json();
+        const pages = await pagesRes.json();
+        const referrers = await referrersRes.json();
+        const browsers = await browsersRes.json();
+
+        return { stats, pages, referrers, browsers };
+    } catch (err) {
+        console.warn('Umami detailed metrics failed:', err.message);
+        return null;
+    }
+}
+
+// Render analytics dashboard (on analytics.html page)
+async function renderAnalyticsDashboard() {
+    const dashboard = document.getElementById('analytics-dashboard');
+    if (!dashboard) return;
+
+    dashboard.innerHTML = '<p class="dashboard-loading">Loading analytics data...</p>';
+
+    const metrics = await fetchUmamiMetrics();
+
+    if (!metrics) {
+        dashboard.innerHTML = `
+            <div class="dashboard-card">
+                <h3>📊 Analytics</h3>
+                <p class="dashboard-error">
+                    Umami is not configured yet. Add your API URL, Website ID, and API Token in
+                    <code>assets/js/script.js</code> to see real analytics data here.
+                </p>
+                <p style="color: var(--color-text-muted); margin-top: 12px; font-size: 0.88em;">
+                    Sign up at <a href="https://umami.is" target="_blank">umami.is</a> (free tier available)
+                    or self-host with Docker.
+                </p>
+            </div>
+        `;
+        return;
+    }
+
+    const s = metrics.stats;
+    const visitors = s.visitors?.value || s.uniques?.value || 0;
+    const pageviews = s.pageviews?.value || 0;
+    const bounces = s.bounces?.value || 0;
+    const avgTime = s.totaltime?.value ? Math.round((s.totaltime.value / visitors) / 1000) : 0;
+
+    let pagesHtml = '';
+    if (metrics.pages && metrics.pages.length > 0) {
+        pagesHtml = metrics.pages.slice(0, 8).map(p =>
+            `<li><span>${p.x || p.url || '/'}</span><span class="metric-value">${p.y || p.views || 0}</span></li>`
+        ).join('');
+    }
+
+    let referrersHtml = '';
+    if (metrics.referrers && metrics.referrers.length > 0) {
+        referrersHtml = metrics.referrers.slice(0, 6).map(r =>
+            `<li><span>${r.x || r.referrer || 'Direct'}</span><span class="metric-value">${r.y || r.views || 0}</span></li>`
+        ).join('');
+    }
+
+    let browsersHtml = '';
+    if (metrics.browsers && metrics.browsers.length > 0) {
+        browsersHtml = metrics.browsers.slice(0, 5).map(b =>
+            `<li><span>${b.x || b.browser || 'Unknown'}</span><span class="metric-value">${b.y || b.views || 0}</span></li>`
+        ).join('');
+    }
+
+    dashboard.innerHTML = `
+        <div class="dashboard-card">
+            <h3>👁 Unique Visitors</h3>
+            <div class="big-number">${visitors.toLocaleString()}</div>
+            <div class="label">Last 30 days</div>
+        </div>
+        <div class="dashboard-card">
+            <h3>📄 Page Views</h3>
+            <div class="big-number">${pageviews.toLocaleString()}</div>
+            <div class="label">Last 30 days</div>
+        </div>
+        <div class="dashboard-card">
+            <h3>⏱ Avg. Visit Duration</h3>
+            <div class="big-number">${avgTime}s</div>
+            <div class="label">Per visitor</div>
+        </div>
+        <div class="dashboard-card">
+            <h3>🚪 Bounce Rate</h3>
+            <div class="big-number">${pageviews > 0 ? Math.round((bounces / visitors) * 100) : 0}%</div>
+            <div class="label">Single page visits</div>
+        </div>
+        ${pagesHtml ? `
+        <div class="dashboard-card dashboard-full-width">
+            <h3>📊 Top Pages</h3>
+            <ul class="metrics-list">${pagesHtml}</ul>
+        </div>` : ''}
+        ${referrersHtml ? `
+        <div class="dashboard-card">
+            <h3>🔗 Referrers</h3>
+            <ul class="metrics-list">${referrersHtml}</ul>
+        </div>` : ''}
+        ${browsersHtml ? `
+        <div class="dashboard-card">
+            <h3>🌐 Browsers</h3>
+            <ul class="metrics-list">${browsersHtml}</ul>
+        </div>` : ''}
+    `;
 }
 
 async function animateAnalytics() {
     if (analyticsAnimated) return;
     analyticsAnimated = true;
 
-    // Get dynamic counts
-    const projectCount = await countProjects();
     const experienceYears = calculateExperience();
-    const artworkCount = await countArtworks();
-    const visitorCount = getVisitorCount();
 
-    // Animate counters with real values
-    animateCounter('projectCount', 0, projectCount, 2000);
-    animateCounter('experienceYears', 0, experienceYears, 2000);
-    animateCounter('artworkCount', 0, artworkCount, 2000);
-    animateCounter('visitorCount', 0, visitorCount, 2000);
+    // Hardcoded project/artwork counts (avoid fetching and parsing HTML)
+    const projectCount = 3;
+    const artworkCount = 4;
+
+    // Animate counters
+    animateCounter('projectCount', 0, projectCount, 1500);
+    animateCounter('experienceYears', 0, experienceYears, 1500);
+    animateCounter('artworkCount', 0, artworkCount, 1500);
+
+    // AI mode counters
+    animateCounter('workflowsCount', 0, 142, 2000);
+    animateCounter('tokensGenerated', 0, 8, 1500);
+    animateCounter('computeUsage', 0, 1205, 2000);
+
+    // Fetch real visitor count from Umami
+    const stats = await fetchUmamiStats();
+    const visitorEl = document.getElementById('visitorCount');
+    if (visitorEl) {
+        if (stats.configured && stats.visitors > 0) {
+            animateCounter('visitorCount', 0, stats.visitors, 2000);
+        } else {
+            visitorEl.textContent = '—';
+            visitorEl.title = 'Connect Umami analytics to see real visitor data';
+        }
+    }
 }
 
-/*
- * ===================================================================
- *  3D TILT EFFECT
- * ===================================================================
- */
+/* ===================================================================
+ *  3D TILT EFFECT (refined — reduced intensity)
+ * =================================================================== */
+
 function initTiltEffect() {
     const cards = document.querySelectorAll('.project-card, .blog-card');
 
@@ -480,19 +639,17 @@ function initTiltEffect() {
             const rect = card.getBoundingClientRect();
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
-
             const centerX = rect.width / 2;
             const centerY = rect.height / 2;
 
-            const rotateX = ((y - centerY) / centerY) * -10; // Max 10deg rotation
-            const rotateY = ((x - centerX) / centerX) * 10;
+            // Reduced from ±10° to ±5° for elegance
+            const rotateX = ((y - centerY) / centerY) * -5;
+            const rotateY = ((x - centerX) / centerX) * 5;
 
-            // Dynamic shadow shift based on tilt
-            const shadowX = rotateY * 2;
-            const shadowY = -rotateX * 2;
-            card.style.boxShadow = `${shadowX}px ${shadowY}px 30px rgba(255, 215, 0, 0.15), 0 20px 40px rgba(0, 0, 0, 0.4)`;
-
-            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+            const shadowX = rotateY * 1.5;
+            const shadowY = -rotateX * 1.5;
+            card.style.boxShadow = `${shadowX}px ${shadowY}px 25px rgba(0, 0, 0, 0.2), 0 15px 35px rgba(0, 0, 0, 0.3)`;
+            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.01, 1.01, 1.01)`;
 
             // Glare effect
             let glare = card.querySelector('.glare');
@@ -501,78 +658,74 @@ function initTiltEffect() {
                 glare.className = 'glare';
                 card.appendChild(glare);
             }
-            const glareX = x;
-            const glareY = y;
-            glare.style.background = `radial-gradient(circle at ${glareX}px ${glareY}px, rgba(255, 255, 255, 0.2) 0%, transparent 80%)`;
+            glare.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(255, 255, 255, 0.12) 0%, transparent 80%)`;
         });
 
         card.addEventListener('mouseleave', () => {
             card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
-            card.style.boxShadow = '0 0 20px rgba(255, 215, 0, 0.1), 0 10px 30px rgba(0, 0, 0, 0.3)';
+            card.style.boxShadow = '';
         });
     });
 }
 
-// Initialize effects when DOM is loaded
+/* ===================================================================
+ *  MAIN INITIALIZATION
+ * =================================================================== */
+
 document.addEventListener('DOMContentLoaded', function () {
-    // Theme Toggle Logic
-    const themeToggle = document.getElementById('checkbox');
-    if (themeToggle) {
-        // Check for saved preference
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme === 'artist') {
-            document.body.setAttribute('data-theme', 'artist');
-            themeToggle.checked = true;
+
+    // ── AI Mode Toggle (separate from visual theme) ──
+    const aiToggle = document.getElementById('ai-checkbox');
+    if (aiToggle) {
+        const savedAiMode = localStorage.getItem('ai_mode');
+        if (savedAiMode === 'ai_enhanced') {
+            document.body.setAttribute('data-theme-mode', 'ai_enhanced');
+            aiToggle.checked = true;
         }
 
-        themeToggle.addEventListener('change', function () {
+        aiToggle.addEventListener('change', function () {
             if (this.checked) {
-                document.body.setAttribute('data-theme', 'artist');
-                localStorage.setItem('theme', 'artist');
+                document.body.setAttribute('data-theme-mode', 'ai_enhanced');
+                localStorage.setItem('ai_mode', 'ai_enhanced');
             } else {
-                document.body.removeAttribute('data-theme');
-                localStorage.setItem('theme', 'engineer');
+                document.body.removeAttribute('data-theme-mode');
+                localStorage.setItem('ai_mode', 'normal');
             }
         });
     }
 
-    // Populate gallery if on gallery page
-    if (document.getElementById('gallery-items') || document.getElementById('gallery')) {
+    // ── Gallery ──
+    if (document.getElementById('gallery-items') || document.getElementById('albums-grid')) {
         updateGalleryFromApi();
     }
 
-    // Populate blog grid if on blog page
+    // ── Blog ──
     if (document.querySelector('.blog-grid')) {
         populateBlogGrid();
     }
 
-    // Navigation active link logic
+    // ── Navigation active link ──
     const links = document.querySelectorAll('nav a');
     const currentPathname = window.location.pathname.split('/').pop() || 'index.html';
-    const currentHash = window.location.hash;
 
     links.forEach(link => {
         const linkHref = link.getAttribute('href');
+        if (!linkHref) return;
         const linkPathname = linkHref.split('/').pop().split('#')[0];
-        const linkHash = linkHref.includes('#') ? '#' + linkHref.split('#')[1] : '';
 
-        if (linkPathname === currentPathname && linkHash === currentHash) {
+        let effectivePathname = currentPathname;
+        if (effectivePathname === 'gallery.html') {
+            effectivePathname = 'projects.html';
+        }
+
+        if (linkPathname === effectivePathname) {
             link.classList.add('active');
         } else {
             link.classList.remove('active');
         }
-
-        // Smooth scroll for anchor links on the home page
-        if (currentPathname === 'index.html' && linkHref.startsWith('#')) {
-            link.addEventListener('click', function (e) {
-                e.preventDefault();
-                const targetId = this.getAttribute('href').substring(1);
-                customSmoothScroll(targetId, 1200);
-            });
-        }
     });
 
-    // Intersection Observer for analytics section
+    // ── Analytics Section Observer ──
     const analyticsSection = document.getElementById('analytics');
     if (analyticsSection) {
         const observer = new IntersectionObserver((entries) => {
@@ -582,16 +735,206 @@ document.addEventListener('DOMContentLoaded', function () {
                     observer.disconnect();
                 }
             });
-        }, { threshold: 0.5 });
+        }, { threshold: 0.3 });
         observer.observe(analyticsSection);
     }
 
-    // Initialize tilt effect
+    // ── Analytics Dashboard Page ──
+    renderAnalyticsDashboard();
+
+    // ── Scroll Animations ──
+    initScrollAnimations();
+
+    // ── Tilt Effect ──
     initTiltEffect();
 
-    // Initialize Neural Network Background
+    // ── Neural Network ──
     initNeuralNetwork();
 
-    // Initialize Page Transitions
+    // ── Page Transitions ──
     initPageTransitions();
+
+    // ── Modal close on backdrop click ──
+    document.addEventListener('click', function (e) {
+        const modal = document.getElementById('imageModal');
+        if (e.target === modal) {
+            closeModal();
+        }
+    });
+
+    // ── Global AI Widget ──
+    injectAIWidget();
+
+    // ── Chat Widget ──
+    initChatWidget();
+
+    // ── UX Enhance: Magnetic Buttons ──
+    initMagneticButtons();
+
+    // ── UX Enhance: Scroll-Synced Path ──
+    initScrollSyncedPath();
 });
+
+function injectAIWidget() {
+    if (document.getElementById('ai-chat-widget')) return;
+
+    const widgetHTML = `
+    <div id="ai-chat-widget" class="ai-exclusive">
+        <div id="ai-chat-btn">
+            🤖 Ask AI
+        </div>
+        <div id="ai-chat-box" class="hidden">
+            <div id="ai-chat-header">
+                <h3>Satadal.AI Assistant</h3>
+                <span id="close-chat">&times;</span>
+            </div>
+            <div id="ai-chat-messages">
+                <div class="msg ai">Hi! I'm Satadal's AI clone. Ask me about his resume or leave a message.</div>
+            </div>
+            <div id="ai-chat-input-area">
+                <input type="text" id="chat-query" placeholder="Ask about Python, ComfyUI, etc...">
+                <button id="chat-send">▶</button>
+            </div>
+        </div>
+    </div>`;
+    document.body.insertAdjacentHTML('beforeend', widgetHTML);
+}
+
+function initMagneticButtons() {
+    const magnets = document.querySelectorAll('.btn, .social-icon, .read-more');
+    
+    magnets.forEach(magnet => {
+        magnet.addEventListener('mousemove', function(e) {
+            const position = magnet.getBoundingClientRect();
+            const x = e.clientX - position.left - position.width / 2;
+            const y = e.clientY - position.top - position.height / 2;
+            
+            // magnetic translation
+            magnet.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
+            
+            // if we want a sub-element to move slightly more
+            const text = magnet.querySelector('.btn-text');
+            if(text) text.style.transform = `translate(${x * 0.1}px, ${y * 0.1}px)`;
+        });
+
+        magnet.addEventListener('mouseleave', function() {
+            magnet.style.transform = `translate(0px, 0px)`;
+            const text = magnet.querySelector('.btn-text');
+            if(text) text.style.transform = `translate(0px, 0px)`;
+        });
+    });
+}
+
+function initScrollSyncedPath() {
+    const timeline = document.querySelector('.timeline');
+    const progressBar = document.querySelector('.timeline-progress');
+    const items = document.querySelectorAll('.timeline-item');
+    if (!timeline || !progressBar) return;
+
+    window.addEventListener('scroll', () => {
+        const rect = timeline.getBoundingClientRect();
+        const windowHeight = window.innerHeight;
+        
+        // Start timeline progress when top of timeline is at the middle of the screen
+        const start = rect.top - windowHeight / 2;
+        
+        let progress = 0;
+        if (start < 0) {
+            // How much of the timeline has scrolled past
+            progress = Math.abs(start) / (rect.height);
+        }
+        progress = Math.max(0, Math.min(1, progress));
+        progressBar.style.height = `${progress * 100}%`;
+
+        // Check each dot
+        items.forEach(item => {
+            const itemRect = item.getBoundingClientRect();
+            // middle of the screen offset
+            if (itemRect.top < windowHeight / 2 + 50) {
+                item.classList.add('active');
+            } else {
+                item.classList.remove('active');
+            }
+        });
+    });
+}
+
+function initChatWidget() {
+    const btn = document.getElementById('ai-chat-btn');
+    const box = document.getElementById('ai-chat-box');
+    const closeBtn = document.getElementById('close-chat');
+    const sendBtn = document.getElementById('chat-send');
+    const queryInput = document.getElementById('chat-query');
+    const msgContainer = document.getElementById('ai-chat-messages');
+
+    if (!btn || !box) return;
+
+    btn.addEventListener('click', () => {
+        box.classList.toggle('hidden');
+    });
+
+    if (closeBtn) {
+        closeBtn.addEventListener('click', () => {
+            box.classList.add('hidden');
+        });
+    }
+
+    function addMessage(text, type) {
+        const div = document.createElement('div');
+        div.className = `msg ${type}`;
+        div.textContent = text;
+        msgContainer.appendChild(div);
+        msgContainer.scrollTop = msgContainer.scrollHeight;
+    }
+
+    async function handleQuery() {
+        const txt = queryInput.value.trim();
+        if (!txt) return;
+        addMessage(txt, 'user');
+        queryInput.value = '';
+
+        const lowerTxt = txt.toLowerCase();
+        let response = '';
+
+        if (lowerTxt.includes('hello') || lowerTxt.includes('hi')) {
+            response = "Hello there! How can I help you regarding Satadal's portfolio?";
+        } else if (lowerTxt.includes('resume') || lowerTxt.includes('experience') || lowerTxt.includes('skills')) {
+            response = 'Satadal is an Automation Architect and Software Developer. He specializes in Agentic AI, Python, Java, and Jenkins. You can download his full resume from the Contact page.';
+        } else if (lowerTxt.includes('comfyui') || lowerTxt.includes('projects')) {
+            response = 'You should definitely check out the SATA_UtilityNode project on the Projects page. It is a ComfyUI custom node suite built using Python.';
+        } else {
+            response = 'I am a basic AI fallback script. Since that inquiry was too complex, I will forward your message directly to Satadal via EmailJS...';
+            addMessage(response, 'ai');
+
+            setTimeout(async () => {
+                if (window.emailjs) {
+                    try {
+                        await emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', {
+                            from_name: 'Visitor via AI Chat',
+                            from_email: 'anonymous@visitor.com',
+                            subject: 'AI Chat Inquiry',
+                            message: txt
+                        });
+                        addMessage('Success! The message was forwarded.', 'ai');
+                    } catch (e) {
+                        addMessage('EmailJS sending failed. Please use the Contact page instead.', 'ai');
+                    }
+                } else {
+                    addMessage('EmailJS is not initialized. Please visit the Contact page.', 'ai');
+                }
+            }, 1000);
+            return;
+        }
+
+        setTimeout(() => {
+            addMessage(response, 'ai');
+        }, 500);
+    }
+
+    if (sendBtn) sendBtn.addEventListener('click', handleQuery);
+    if (queryInput) {
+        queryInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') handleQuery();
+        });
+    }
+}

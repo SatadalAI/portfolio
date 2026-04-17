@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Analytics - Satadal Dhara | Portfolio Insights</title>
+    <meta name="description" content="Real-time analytics dashboard for Satadal Dhara's portfolio website.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+    <script defer src="https://cloud.umami.is/script.js" data-website-id="YOUR-WEBSITE-ID"></script>
+</head>
+
+<body>
+    <script>document.body.classList.add('fade-in');</script>
+    <div class="bg-animation"></div>
+    <canvas id="neural-network-canvas"></canvas>
+
+    <!-- Island Navigation -->
+    <nav class="island-nav">
+        <div class="nav-container">
+            <ul class="nav-links">
+                <li><a href="index.html" id="nav-home">Home</a></li>
+                <li><a href="projects.html" id="nav-projects">Projects</a></li>
+                <li><a href="blog.html" id="nav-blog">Blog</a></li>
+                <li><a href="contact.html" id="nav-contact">Contact</a></li>
+            </ul>
+            <div class="theme-toggle-wrapper">
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page content -->
+    <div id="analytics-page" class="page page-section">
+        <div class="container">
+            <h1 class="page-title">Portfolio Analytics</h1>
+            <p class="page-subtitle">Powered by Umami — privacy-friendly, no cookies</p>
+
+            <div id="analytics-dashboard" class="analytics-dashboard">
+                <!-- Dashboard cards are rendered by script.js -->
+                <p class="dashboard-loading">Loading analytics data...</p>
+            </div>
+
+            <div style="text-align: center; margin-top: 48px;">
+                <p style="color: var(--color-text-muted); font-size: 0.88em; margin-bottom: 16px;">
+                    This dashboard fetches real-time data from the Umami analytics API.<br>
+                    Data covers the last 30 days and refreshes on each page visit.
+                </p>
+                <a href="https://umami.is" target="_blank" class="btn btn-outline" style="font-size: 0.82em;">
+                    Learn About Umami ↗
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Satadal Dhara. Crafted with passion and code.</p>
+    </footer>
+
+    <script defer src="assets/js/script.js"></script>
+</body>
+
+</html>

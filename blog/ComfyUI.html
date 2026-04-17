@@ -4,84 +4,85 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Unlocking Creativity with ComfyUI - Satadal Dhara</title>
-<link rel="stylesheet" href="../style.css">
+<meta name="description" content="Learn how ComfyUI's node-based workflow offers unparalleled flexibility for AI image generation.">
+
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+<script defer src="https://cloud.umami.is/script.js" data-website-id="YOUR-WEBSITE-ID"></script>
 </head>
 <body>
 <script>document.body.classList.add('fade-in');</script>
 <div class="bg-animation"></div>
-<!-- Particles -->
-<div class="particle" style="left: 10%; animation-delay: 0s;"></div>
-    <div class="particle" style="left: 20%; animation-delay: 2s;"></div>
-    <div class="particle" style="left: 40%; animation-delay: 1s;"></div>
-    <div class="particle" style="left: 50%; animation-delay: 3s;"></div>
-    <div class="particle" style="left: 80%; animation-delay: 4.5s;"></div>
-    <div class="particle" style="left: 90%; animation-delay: 1.5s;"></div>
+<canvas id="neural-network-canvas"></canvas>
 
-<nav>
-    <ul>
-        <li><a href="../index.html" id="nav-home">Home</a></li>
-        <li><a href="../projects.html" id="nav-projects">Projects</a></li>
-        <li><a href="../blog.html" id="nav-blog">Blog</a></li>
-        <li><a href="../gallery.html" id="nav-gallery">Gallery</a></li>
-        <li><a href="../contact.html" id="nav-contact">Contact</a></li>
-    </ul>
-</nav>
-
-<!-- Page content preserved from SPA -->
-<div id="blog-post" class="page">
-        <div class="page-container">
-            <div class="container">
-                <article class="blog-article">
-                    <header>
-                        <h1 class="page-title">Unlocking Creativity with ComfyUI: A Node-Based Workflow</h1>
-                        <p class="article-meta">Published on November 20, 2025 by Satadal Dhara</p>
-                    </header>
-
-                    <section>
-                        <p>In the rapidly evolving landscape of Generative AI, Stable Diffusion has emerged as a powerhouse for image generation. While interfaces like Automatic1111 have democratized access, there's a new player that's changing how we think about AI art pipelines: <strong>ComfyUI</strong>.</p>
-                        
-                        <h2>The Node-Based Paradigm</h2>
-                        <p>Unlike traditional web interfaces that hide the complexity behind sliders and buttons, ComfyUI exposes the raw machinery of Stable Diffusion through a node-based graph architecture. If you've ever used Blender's shader editor or Unreal Engine's Blueprints, you'll feel right at home.</p>
-                        <p>This visual programming approach offers unparalleled flexibility. You aren't just "generating an image"; you are designing a <em>pipeline</em>. You can route latents, conditionings, and models in ways that standard UIs simply don't allow.</p>
-
-                        <h2>Building a Basic Workflow</h2>
-                        <p>At its core, a Stable Diffusion workflow in ComfyUI breaks down into five essential components:</p>
-                        <ol>
-                            <li><strong>Load Checkpoint:</strong> The brain of the operation. This node loads the model weights (e.g., SDXL or SD1.5).</li>
-                            <li><strong>CLIP Text Encode (Prompting):</strong> This is where you input your positive and negative prompts. The text is converted into embeddings that the model can understand.</li>
-                            <li><strong>Empty Latent Image:</strong> This defines the canvas size (e.g., 512x512 or 1024x1024) and creates the initial noise.</li>
-                            <li><strong>KSampler:</strong> The engine room. This node takes the noise, the model, and the prompt embeddings to iteratively denoise the image over a set number of steps.</li>
-                            <li><strong>VAE Decode:</strong> Finally, the latent representation is decoded back into a visible pixel-based image.</li>
-                        </ol>
-
-                        <h2>Why It Matters for Creators</h2>
-                        <p>The true power of ComfyUI lies in its reproducibility and modularity. Once you build a complex workflow—say, one that generates an image, upscales it, and then performs a face detailer pass—you can save it as a JSON file. This file <em>is</em> your workflow. You can share it, version control it, and tweak it without rebuilding from scratch.</p>
-
-                        <blockquote>
-                            ComfyUI turns the "black box" of AI generation into a transparent, engineerable glass box.
-                        </blockquote>
-
-                        <p>For developers and technical artists, this is a game-changer. It bridges the gap between artistic intent and technical execution, allowing for precise control over every step of the generation process.</p>
-
-                        <a href="../blog.html" class="back-link">← Back to All Articles</a>
-                    </section>
-                </article>
-            </div>
+<!-- Island Navigation -->
+<nav class="island-nav">
+    <div class="nav-container">
+        <ul class="nav-links">
+            <li><a href="../index.html" id="nav-home">Home</a></li>
+            <li><a href="../projects.html" id="nav-projects">Projects</a></li>
+            <li><a href="../blog.html" id="nav-blog" class="active">Blog</a></li>
+            <li><a href="../contact.html" id="nav-contact">Contact</a></li>
+        </ul>
+        <div class="theme-toggle-wrapper">
         </div>
     </div>
+</nav>
+
+<div id="blog-post" class="page">
+    <div class="page-container">
+        <div class="container">
+            <article class="blog-article">
+                <header>
+                    <h1 class="page-title">Unlocking Creativity with ComfyUI: A Node-Based Workflow</h1>
+                    <p class="article-meta">Published on November 20, 2025 by Satadal Dhara</p>
+                </header>
+
+                <section>
+                    <p>In the rapidly evolving landscape of Generative AI, Stable Diffusion has emerged as a powerhouse for image generation. While interfaces like Automatic1111 have democratized access, there's a new player that's changing how we think about AI art pipelines: <strong>ComfyUI</strong>.</p>
+                    
+                    <h2>The Node-Based Paradigm</h2>
+                    <p>Unlike traditional web interfaces that hide the complexity behind sliders and buttons, ComfyUI exposes the raw machinery of Stable Diffusion through a node-based graph architecture. If you've ever used Blender's shader editor or Unreal Engine's Blueprints, you'll feel right at home.</p>
+                    <p>This visual programming approach offers unparalleled flexibility. You aren't just "generating an image"; you are designing a <em>pipeline</em>. You can route latents, conditionings, and models in ways that standard UIs simply don't allow.</p>
+
+                    <h2>Building a Basic Workflow</h2>
+                    <p>At its core, a Stable Diffusion workflow in ComfyUI breaks down into five essential components:</p>
+                    <ol>
+                        <li><strong>Load Checkpoint:</strong> The brain of the operation. This node loads the model weights (e.g., SDXL or SD1.5).</li>
+                        <li><strong>CLIP Text Encode (Prompting):</strong> This is where you input your positive and negative prompts. The text is converted into embeddings that the model can understand.</li>
+                        <li><strong>Empty Latent Image:</strong> This defines the canvas size (e.g., 512x512 or 1024x1024) and creates the initial noise.</li>
+                        <li><strong>KSampler:</strong> The engine room. This node takes the noise, the model, and the prompt embeddings to iteratively denoise the image over a set number of steps.</li>
+                        <li><strong>VAE Decode:</strong> Finally, the latent representation is decoded back into a visible pixel-based image.</li>
+                    </ol>
+
+                    <h2>Why It Matters for Creators</h2>
+                    <p>The true power of ComfyUI lies in its reproducibility and modularity. Once you build a complex workflow—say, one that generates an image, upscales it, and then performs a face detailer pass—you can save it as a JSON file. This file <em>is</em> your workflow. You can share it, version control it, and tweak it without rebuilding from scratch.</p>
+
+                    <blockquote>
+                        ComfyUI turns the "black box" of AI generation into a transparent, engineerable glass box.
+                    </blockquote>
+
+                    <p>For developers and technical artists, this is a game-changer. It bridges the gap between artistic intent and technical execution, allowing for precise control over every step of the generation process.</p>
+
+                    <a href="../blog.html" class="back-link">← Back to All Articles</a>
+                </section>
+            </article>
+        </div>
+    </div>
+</div>
 
 <footer>
-        <p>&copy; 2025 Satadal Dhara. Crafted with passion and code.</p>
-    </footer>
+    <p>&copy; 2025 Satadal Dhara. Crafted with passion and code.</p>
+</footer>
 
-
-<!-- Modal for Image Viewing -->
 <div id="imageModal" class="modal">
     <span class="close" onclick="closeModal()">&times;</span>
     <img class="modal-content" id="modalImage">
 </div>
 
-
-<script src="../script.js"></script>
+<script defer src="../assets/js/script.js"></script>
 </body>
 </html>

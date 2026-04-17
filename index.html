@@ -14,24 +14,28 @@
     <meta property="og:title" content="Satadal Dhara | AI & Automation Developer">
     <meta property="og:description"
         content="AI & Automation Solution Developer specializing in LLMs, RAG, Agentic AI, and digital art.">
-    <meta property="og:image" content="https://satadaldhra.github.io/assets/satadal.jpg">
+    <meta property="og:image" content="https://satadaldhara.github.io/assets/satadal.jpg">
     <meta property="og:url" content="https://satadaldhara.github.io/">
     <meta property="og:type" content="website">
 
+    <!-- Preconnect for fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
     <link rel="stylesheet" href="assets/css/style.css">
+
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+
+    <!-- Umami Analytics (privacy-friendly, no cookies) -->
+    <!-- Replace data-website-id with your actual Umami website ID -->
+    <script defer src="https://cloud.umami.is/script.js" data-website-id="YOUR-WEBSITE-ID"></script>
 </head>
 
 <body>
     <script>document.body.classList.add('fade-in');</script>
     <div class="bg-animation"></div>
     <canvas id="neural-network-canvas"></canvas>
-    <!-- Particles -->
-    <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
-    <div class="particle" style="left: 20%; animation-delay: 2s;"></div>
-    <div class="particle" style="left: 40%; animation-delay: 1s;"></div>
-    <div class="particle" style="left: 50%; animation-delay: 3s;"></div>
-    <div class="particle" style="left: 80%; animation-delay: 4.5s;"></div>
-    <div class="particle" style="left: 90%; animation-delay: 1.5s;"></div>
 
     <!-- Island Navigation -->
     <nav class="island-nav">
@@ -39,18 +43,19 @@
             <ul class="nav-links">
                 <li><a href="index.html" id="nav-home" class="active">Home</a></li>
                 <li><a href="projects.html" id="nav-projects">Projects</a></li>
-                <li><a href="gallery.html" id="nav-gallery">Gallery</a></li>
                 <li><a href="blog.html" id="nav-blog">Blog</a></li>
                 <li><a href="contact.html" id="nav-contact">Contact</a></li>
             </ul>
             <div class="theme-toggle-wrapper">
-                <label class="theme-switch" for="checkbox">
-                    <input type="checkbox" id="checkbox" />
-                    <div class="slider round">
-                        <span class="icon-engineer">⚙️</span>
-                        <span class="icon-artist">🎨</span>
-                    </div>
-                </label>
+                <div class="ai-mode-toggle">
+                    <label class="theme-switch" for="ai-checkbox">
+                        <input type="checkbox" id="ai-checkbox" />
+                        <div class="slider round">
+                            <span class="icon-professional">👨‍💼</span>
+                            <span class="icon-ai">🤖</span>
+                        </div>
+                    </label>
+                </div>
             </div>
         </div>
     </nav>
@@ -59,13 +64,14 @@
     <div id="home" class="page new-hero-container">
         <div class="hero-left">
             <div class="profile-picture">
-                <img src="assets/satadal.jpg" alt="Satadal Dhara - AI & Automation Developer" loading="lazy">
+                <img src="assets/satadal.jpg" alt="Satadal Dhara - AI & Automation Developer" fetchpriority="high">
             </div>
             <h1 class="hero-name">Satadal Dhara</h1>
-            <p class="tagline">AI & Automation Solution Developer | Agentic AI & RAG Specialist | Digital Artist</p>
+            <p class="tagline normal-exclusive">Automation Architect & Software Developer</p>
+            <p class="tagline ai-exclusive">Agentic AI Specialist & Prompt Engineer | Digital Artist</p>
             <div class="cta-buttons">
                 <a href="projects.html" class="btn">View My Work</a>
-                <a href="contact.html" class="btn">Connect With Me</a>
+                <a href="contact.html" class="btn btn-outline">Connect With Me</a>
             </div>
         </div>
         <div class="hero-right">
@@ -106,12 +112,13 @@
         </div>
     </div>
 
-    <!-- Merged Journey Section -->
+    <!-- Journey Section -->
     <div id="journey" class="page-section container">
         <h2 class="section-title">My Journey</h2>
         <p class="page-subtitle">The path that shaped my career</p>
 
         <div class="timeline">
+            <div class="timeline-progress"></div>
             <div class="timeline-item">
                 <div class="timeline-content">
                     <span class="timeline-date">April 2023 - Present</span>
@@ -227,21 +234,36 @@
             </div>
         </div>
     </div>
+
+    <!-- Analytics Section -->
     <div id="analytics" class="page-section container">
         <h2 class="section-title">My Impact</h2>
         <p class="page-subtitle">Numbers that tell a story</p>
         <div class="stats-grid">
-            <div class="stat-card">
+            <div class="stat-card normal-exclusive">
                 <div class="stat-number" id="projectCount">0+</div>
                 <div class="stat-label">Projects Completed</div>
             </div>
-            <div class="stat-card">
+            <div class="stat-card normal-exclusive">
                 <div class="stat-number" id="experienceYears">0+</div>
                 <div class="stat-label">Years Experience</div>
             </div>
-            <div class="stat-card">
+            <div class="stat-card normal-exclusive">
                 <div class="stat-number" id="artworkCount">0+</div>
                 <div class="stat-label">Digital Artworks</div>
+            </div>
+
+            <div class="stat-card ai-exclusive">
+                <div class="stat-number" id="workflowsCount">0+</div>
+                <div class="stat-label">Workflows Automated</div>
+            </div>
+            <div class="stat-card ai-exclusive">
+                <div class="stat-number" id="tokensGenerated">0+</div>
+                <div class="stat-label">Tokens Generated (M)</div>
+            </div>
+            <div class="stat-card ai-exclusive">
+                <div class="stat-number" id="computeUsage">0+</div>
+                <div class="stat-label">GPU Hours</div>
             </div>
             <div class="stat-card">
                 <div class="stat-number" id="visitorCount">0</div>
@@ -254,13 +276,24 @@
         <p>&copy; 2025 Satadal Dhara. Crafted with passion and code.</p>
     </footer>
 
+
     <!-- Modal for Image Viewing -->
     <div id="imageModal" class="modal">
         <span class="close" onclick="closeModal()">&times;</span>
         <img class="modal-content" id="modalImage">
     </div>
 
-    <script src="assets/js/script.js"></script>
+    <script defer src="assets/js/script.js"></script>
+
+    <!-- EmailJS SDK (loaded async, only needed for chat widget fallback) -->
+    <script async src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.emailjs) {
+                emailjs.init('YOUR_PUBLIC_KEY');
+            }
+        });
+    </script>
 </body>
 
 </html>

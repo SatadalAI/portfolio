@@ -17,20 +17,17 @@
     <meta property="og:url" content="https://satadaldhara.github.io/contact.html">
     <meta property="og:type" content="website">
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+    <script defer src="https://cloud.umami.is/script.js" data-website-id="YOUR-WEBSITE-ID"></script>
 </head>
 
 <body>
     <script>document.body.classList.add('fade-in');</script>
     <div class="bg-animation"></div>
     <canvas id="neural-network-canvas"></canvas>
-    <!-- Particles -->
-    <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
-    <div class="particle" style="left: 20%; animation-delay: 2s;"></div>
-    <div class="particle" style="left: 40%; animation-delay: 1s;"></div>
-    <div class="particle" style="left: 50%; animation-delay: 3s;"></div>
-    <div class="particle" style="left: 80%; animation-delay: 4.5s;"></div>
-    <div class="particle" style="left: 90%; animation-delay: 1.5s;"></div>
 
     <!-- Island Navigation -->
     <nav class="island-nav">
@@ -38,18 +35,19 @@
             <ul class="nav-links">
                 <li><a href="index.html" id="nav-home">Home</a></li>
                 <li><a href="projects.html" id="nav-projects">Projects</a></li>
-                <li><a href="gallery.html" id="nav-gallery">Gallery</a></li>
                 <li><a href="blog.html" id="nav-blog">Blog</a></li>
                 <li><a href="contact.html" id="nav-contact" class="active">Contact</a></li>
             </ul>
             <div class="theme-toggle-wrapper">
-                <label class="theme-switch" for="checkbox">
-                    <input type="checkbox" id="checkbox" />
-                    <div class="slider round">
-                        <span class="icon-engineer">⚙️</span>
-                        <span class="icon-artist">🎨</span>
-                    </div>
-                </label>
+                <div class="ai-mode-toggle">
+                    <label class="theme-switch" for="ai-checkbox">
+                        <input type="checkbox" id="ai-checkbox" />
+                        <div class="slider round">
+                            <span class="icon-professional">👨‍💼</span>
+                            <span class="icon-ai">🤖</span>
+                        </div>
+                    </label>
+                </div>
             </div>
         </div>
     </nav>
@@ -85,6 +83,12 @@
                 </a>
             </div>
 
+            <div class="resume-container" style="margin: 40px 0; text-align: center;">
+                <a href="assets/satadal_dhara_resume.pdf" download="Satadal_Dhara_Resume.pdf" class="btn btn-outline">
+                    Download Resume 📄
+                </a>
+            </div>
+
             <!-- Contact Form -->
             <div class="contact-form-container">
                 <h3 class="form-title">Send Me a Message</h3>
@@ -116,12 +120,6 @@
                     <p id="form-status" class="form-status"></p>
                 </form>
             </div>
-
-            <div class="resume-container" style="margin-top: 40px; text-align: center;">
-                <a href="assets/satadal_dhara_resume.pdf" download="Satadal_Dhara_Resume.pdf" class="btn btn-outline">
-                    Download Resume 📄
-                </a>
-            </div>
         </div>
     </div>
 
@@ -135,53 +133,50 @@
         <img class="modal-content" id="modalImage">
     </div>
 
-    <script src="assets/js/script.js"></script>
+    <script defer src="assets/js/script.js"></script>
 
     <!-- EmailJS SDK -->
-    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script async src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <script>
-        // Initialize EmailJS - Replace with your public key after setup
-        // Instructions: 
-        // 1. Create account at https://www.emailjs.com/
-        // 2. Create an Email Service (Gmail recommended)
-        // 3. Create an Email Template with variables: {{from_name}}, {{from_email}}, {{subject}}, {{message}}
-        // 4. Replace 'YOUR_PUBLIC_KEY', 'YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID' below
+        document.addEventListener('DOMContentLoaded', function() {
+            // Wait for EmailJS to load
+            var checkEmailJS = setInterval(function() {
+                if (window.emailjs) {
+                    clearInterval(checkEmailJS);
+                    emailjs.init('YOUR_PUBLIC_KEY');
 
-        (function () {
-            emailjs.init('YOUR_PUBLIC_KEY'); // Replace with your EmailJS public key
-        })();
+                    document.getElementById('contact-form').addEventListener('submit', function (e) {
+                        e.preventDefault();
 
-        document.getElementById('contact-form').addEventListener('submit', function (e) {
-            e.preventDefault();
+                        var btn = document.getElementById('submit-btn');
+                        var btnText = btn.querySelector('.btn-text');
+                        var btnLoading = btn.querySelector('.btn-loading');
+                        var status = document.getElementById('form-status');
 
-            const btn = document.getElementById('submit-btn');
-            const btnText = btn.querySelector('.btn-text');
-            const btnLoading = btn.querySelector('.btn-loading');
-            const status = document.getElementById('form-status');
+                        btnText.style.display = 'none';
+                        btnLoading.style.display = 'inline';
+                        btn.disabled = true;
+                        status.textContent = '';
+                        status.className = 'form-status';
 
-            // Show loading state
-            btnText.style.display = 'none';
-            btnLoading.style.display = 'inline';
-            btn.disabled = true;
-            status.textContent = '';
-            status.className = 'form-status';
-
-            // Send email via EmailJS
-            emailjs.sendForm('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', this)
-                .then(function () {
-                    status.textContent = '✓ Message sent successfully! I\'ll get back to you soon.';
-                    status.classList.add('success');
-                    document.getElementById('contact-form').reset();
-                }, function (error) {
-                    status.textContent = '✗ Failed to send message. Please try again or email directly.';
-                    status.classList.add('error');
-                    console.error('EmailJS Error:', error);
-                })
-                .finally(function () {
-                    btnText.style.display = 'inline';
-                    btnLoading.style.display = 'none';
-                    btn.disabled = false;
-                });
+                        emailjs.sendForm('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', this)
+                            .then(function () {
+                                status.textContent = '✓ Message sent successfully! I\'ll get back to you soon.';
+                                status.classList.add('success');
+                                document.getElementById('contact-form').reset();
+                            }, function (error) {
+                                status.textContent = '✗ Failed to send message. Please try again or email directly.';
+                                status.classList.add('error');
+                                console.error('EmailJS Error:', error);
+                            })
+                            .finally(function () {
+                                btnText.style.display = 'inline';
+                                btnLoading.style.display = 'none';
+                                btn.disabled = false;
+                            });
+                    });
+                }
+            }, 200);
         });
     </script>
 </body>

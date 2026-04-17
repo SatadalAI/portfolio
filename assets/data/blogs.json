@@ -3,24 +3,28 @@
     "url": "blog/ComfyUI.html",
     "title": "Unlocking Creativity with ComfyUI: A Node-Based Workflow",
     "excerpt": "Unlike traditional web interfaces, ComfyUI exposes the raw machinery of Stable Diffusion through a node-based graph architecture. Learn how this visual programming approach offers unparalleled flexibility.",
-    "image": "assets/img/thumbnails/blog_comfyui.png"
+    "image": "assets/img/thumbnails/blog_comfyui.png",
+    "mode": "ai"
   },
   {
     "url": "blog/my-first-aiops-post.html",
     "title": "My First Foray into AIOps: Tackling Alert Fatigue",
     "excerpt": "My journey into AIOps started with a tangible frustrating problem: alert fatigue. See how AI can transform chaotic system monitoring into actionable intelligence.",
-    "image": "assets/img/thumbnails/blog_aiops.png"
+    "image": "assets/img/thumbnails/blog_aiops.png",
+    "mode": "ai"
   },
   {
     "url": "blog/python-scripting-for-automation.html",
     "title": "Python Scripting Best Practices for Automation",
     "excerpt": "Writing a script that \"just works\" is different from engineering a robust solution. Discover essential best practices for scalable and maintainable automation scripts.",
-    "image": "assets/img/thumbnails/blog_python.png"
+    "image": "assets/img/thumbnails/blog_python.png",
+    "mode": "all"
   },
   {
     "url": "blog/python.html",
     "title": "Python for Automation: Beyond the Basics",
     "excerpt": "Explore advanced techniques for structuring Python projects, implementing robust error handling, and using proper logging for enterprise-grade automation systems.",
-    "image": "assets/img/thumbnails/blog_python.png"
+    "image": "assets/img/thumbnails/blog_python.png",
+    "mode": "all"
   }
 ]
