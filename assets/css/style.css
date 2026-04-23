@@ -509,6 +509,8 @@ input:checked + .slider:before {
 }
 
 .hero-left {
+    position: relative;
+    z-index: 10;
     flex-basis: 40%;
     text-align: center;
     display: flex;
@@ -584,6 +586,8 @@ body[data-theme-mode="ai_enhanced"] .profile-picture img {
 }
 
 .hero-right {
+    position: relative;
+    z-index: 10;
     flex-basis: 55%;
     display: flex;
     align-items: center;
@@ -2083,11 +2087,15 @@ footer p {
 
     .hero-left,
     .hero-right {
+    position: relative;
+    z-index: 10;
         flex-basis: 100%;
         width: 100%;
     }
 
     .hero-right {
+    position: relative;
+    z-index: 10;
         flex-direction: column;
         transform: none;
         animation: none;
@@ -2211,4 +2219,31 @@ footer p {
         background: #fff;
         color: #000;
     }
+}
+
+/* ====================================================================
+ * * HOLOGRAPHIC 3D CARDS
+ * ====================================================================*/
+
+}
+
+/* Holographic 3D Cards */
+.project-card, .blog-card, .album-card {
+    transform-style: preserve-3d;
+}
+.project-card::before, .blog-card::before {
+    /* To preserve styling we make sure the dark background also acts as a layer */
+}
+.project-image, .blog-image, .album-cover {
+    transform: translateZ(-20px);
+    transition: transform var(--speed-base) ease;
+}
+.project-content, .blog-content, .album-info {
+    transform: translateZ(40px);
+    transition: transform var(--speed-base) ease;
+    background: transparent; /* if we want to see depth */
+}
+/* Ensure card itself retains background and bounds if needed */
+.project-card {
+    background: var(--gradient-surface);
 }

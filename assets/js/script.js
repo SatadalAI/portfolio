@@ -197,22 +197,63 @@ function closeModal() {
  * =================================================================== */
 
 function initScrollAnimations() {
-    const animatedElements = document.querySelectorAll(
-        '.project-card, .blog-card, .stat-card, .skill-category, .album-card'
-    );
+    // If GSAP is loaded, use 3D Parallax Scroll
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+        gsap.registerPlugin(ScrollTrigger);
 
-    if (animatedElements.length === 0) return;
+        const animatedElements = document.querySelectorAll(
+            '.project-card:not(.gsap-init), .blog-card:not(.gsap-init), .stat-card:not(.gsap-init), .skill-category:not(.gsap-init), .album-card:not(.gsap-init)'
+        );
 
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-                observer.unobserve(entry.target);
-            }
+        if (animatedElements.length === 0) return;
+
+        animatedElements.forEach(el => {
+            el.classList.add('gsap-init');
+            gsap.fromTo(el,
+                { y: 80, opacity: 0, rotationX: 15, z: -100 },
+                { 
+                    y: 0, opacity: 1, rotationX: 0, z: 0,
+                    duration: 1.2,
+                    ease: "power3.out",
+                    scrollTrigger: {
+                        trigger: el,
+                        start: "top 95%",
+                        toggleActions: "play none none reverse"
+                    }
+                }
+            );
         });
-    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+        
+        // Also add parallax to sections
+        const sections = document.querySelectorAll('.page-section:not(.gsap-init-sec)');
+        sections.forEach(sec => {
+            sec.classList.add('gsap-init-sec');
+            gsap.fromTo(sec, 
+                { opacity: 0, y: 50 }, 
+                { opacity: 1, y: 0, duration: 1.5, ease: "power2.out", 
+                  scrollTrigger: { trigger: sec, start: "top 90%" }
+                }
+            );
+        });
+    } else {
+        // Fallback to IntersectionObserver
+        const animatedElements = document.querySelectorAll(
+            '.project-card, .blog-card, .stat-card, .skill-category, .album-card'
+        );
 
-    animatedElements.forEach(el => observer.observe(el));
+        if (animatedElements.length === 0) return;
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        animatedElements.forEach(el => observer.observe(el));
+    }
 }
 
 /* ===================================================================
